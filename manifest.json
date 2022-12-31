@@ -1,5 +1,6 @@
 {
-  "namespace": "modBoilerplate",
+  "namespace": "xMelvorAutoManger",
   "setup": "setup.mjs",
-  "load": ["templates/templates.html"]
+  "load": ["templates/dialog.html"],
+  "icon": "img/M.png"
 }

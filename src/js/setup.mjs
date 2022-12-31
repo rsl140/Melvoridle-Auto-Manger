@@ -1,6 +1,6 @@
 // Modules
 // You can import script modules and have full type completion
-import Greeter from './Greeter/Greeter.mjs';
+import Dialog from './Dialog/index.mjs';
 
 // Data
 // Game data for registration
@@ -12,23 +12,30 @@ import '../css/styles.css';
 
 // Images
 // To bundle your mod's icon
-import '../img/icon.png';
+import '../img/M.png';
 // Reference images using `ctx.getResourceUrl`
-import LargeIcon from '../img/icon_large.png';
+import LargeIcon from '../img/M_large.png';
+import LargeSidebarIcon from '../img/icon_large.png';
 
 /**
- * @param {ModContext} ctx 
+ * @param {ModContext} ctx
  */
 export async function setup(ctx) {
   await ctx.gameData.addPackage(ModData);
+  // ctx.onModsLoaded(() => {
+  //   console.warn('Hello From My Mod!');
+  // });
 
   ctx.onInterfaceReady(() => {
-    const html = document.createElement('div');
-    SwalLocale.fire({
-      iconHtml: `<img class="modBoilerplate__logo-img" src="${ctx.getResourceUrl(LargeIcon)}" />`,
-      title: 'Mod Boilerplate',
-      html
+    sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheating', {
+      icon: ctx.getResourceUrl(LargeSidebarIcon),
+      onClick() {
+        ui.create(Dialog({
+          modalID: 'modal-aaa',
+          modalTitle: 'text',
+          modalContent: `<img class="modBoilerplate__logo-img" src="${ctx.getResourceUrl(LargeIcon)}" />`
+        }), document.getElementById('page-container'));
+      }
     });
-    ui.create(Greeter({ name: 'Melvor' }), html);
   });
 }

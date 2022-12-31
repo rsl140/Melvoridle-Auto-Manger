@@ -1,0 +1,21 @@
+<template id="x-dialog">
+  <div :id="modalID" class="x-dialog">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="block block-themed block-transparent mb-0">
+          <div class="block-header bg-primary-dark">
+            <h3 class="block-title">{{modalTitle}}</h3>
+            <div class="block-options">
+              <button class="btn-block-option" @click="close">
+                <i class="fa fa-fw fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="block-container">
+            <div v-html="modalContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
