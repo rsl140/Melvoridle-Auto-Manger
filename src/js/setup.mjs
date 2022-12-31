@@ -27,14 +27,17 @@ export async function setup(ctx) {
   // });
 
   ctx.onInterfaceReady(() => {
+    const dialog = Dialog({
+      modalShow: false,
+      modalID: 'modal-aaa',
+      modalTitle: 'text',
+      modalContent: `<img class="modBoilerplate__logo-img" src="${ctx.getResourceUrl(LargeIcon)}" />`
+    })
+    ui.create(dialog, document.getElementById('page-container'));
     sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheating', {
       icon: ctx.getResourceUrl(LargeSidebarIcon),
       onClick() {
-        ui.create(Dialog({
-          modalID: 'modal-aaa',
-          modalTitle: 'text',
-          modalContent: `<img class="modBoilerplate__logo-img" src="${ctx.getResourceUrl(LargeIcon)}" />`
-        }), document.getElementById('page-container'));
+        dialog.open()
       }
     });
   });
