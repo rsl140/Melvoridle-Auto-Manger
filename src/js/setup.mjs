@@ -36,7 +36,7 @@ export async function setup (ctx) {
       modalContent: `<div id="x-table-Items"></div>`
     })
     ui.create(dialog, document.getElementById('page-container'));
-    ui.create(BankItems({ select: 'select' }), document.getElementById('x-table-Items'));
+    ui.create(BankItems({ select: 'select', ctx }), document.getElementById('x-table-Items'));
     sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheat', {
       icon: ctx.getResourceUrl(LargeSidebarIcon),
       onClick () {

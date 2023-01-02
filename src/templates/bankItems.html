@@ -2,6 +2,30 @@
   <div class="x-bank-items-box">
     <div class="col-12">
       <div class="col">
+        <h2>Set Get XP Speed</h2>
+        <div class="input-group mb-3">
+          <input
+            v-model="speed"
+            type="number"
+            class="form-control"
+            placeholder="1"
+            @keyup.enter.native="setSpeed"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="setSpeed"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="col">
         <h2>Add GP</h2>
         <div class="input-group mb-3">
           <input

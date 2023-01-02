@@ -17,9 +17,11 @@ game.skills.forEach((val) => {
     media: val.media
   })
 })
+
 export default function BankItems (props) {
   return {
     $template: '#x-bank-items',
+    ctx: props.ctx,
     skills,
     skillSelect: null,
     masterSkillSelect: null,
@@ -34,6 +36,7 @@ export default function BankItems (props) {
     raidCoins: '',
     xp: '',
     masterXp: '',
+    speed: 1,
     handleClick (key, val) {
       this.selectObj[key] = val
     },
@@ -120,6 +123,13 @@ export default function BankItems (props) {
       } else {
         SwalLocale.fire({
           title: 'add error'
+        });
+      }
+    },
+    setSpeed () {
+      if (this.speed && this.speed > 0) {
+        this.ctx.patch(Skill, 'addXP').replace((o, amount, masteryAction) => {
+          return o(amount * this.speed, masteryAction);
         });
       }
     }
