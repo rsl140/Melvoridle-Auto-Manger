@@ -22,6 +22,7 @@ export default function BankItems (props) {
     $template: '#x-bank-items',
     skills,
     skillSelect: null,
+    masterSkillSelect: null,
     list: tableOfItems,
     listMap: obj,
     select: props.select,
@@ -32,6 +33,7 @@ export default function BankItems (props) {
     prayerPoints: '',
     raidCoins: '',
     xp: '',
+    masterXp: '',
     handleClick (key, val) {
       this.selectObj[key] = val
     },
@@ -98,6 +100,23 @@ export default function BankItems (props) {
         game[this.skillSelect.id.toLowerCase()].addXP(+this.xp);
         this.xp = '';
         this.skillSelect = null;
+      } else {
+        SwalLocale.fire({
+          title: 'add error'
+        });
+      }
+    },
+    handleMasterSkillClick (val, index) {
+      if (+index < 7) {
+        return
+      }
+      this.masterSkillSelect = val;
+    },
+    handleAddMasterPollClick () {
+      if (this.masterXp && this.masterSkillSelect) {
+        game[this.masterSkillSelect.id.toLowerCase()].addMasteryPoolXP(+this.masterXp);
+        this.masterXp = '';
+        this.masterSkillSelect = null;
       } else {
         SwalLocale.fire({
           title: 'add error'

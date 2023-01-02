@@ -153,6 +153,63 @@
     </div>
 
     <div class="col-12">
+      <h2>Add Mastery XP to Pool</h2>
+      <div class="col-12">
+        <div class="row row-deck">
+          <div class="col">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ (masterSkillSelect && masterSkillSelect.name) || "select" }}
+              </button>
+              <div
+                class="dropdown-menu"
+                style="max-height: 400px; overflow-y: auto"
+              >
+                <a
+                  v-for="(skill, index) in skills"
+                  :key="`master-${skill.id}`"
+                  v-show="+index > 7"
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleMasterSkillClick(skill, index)"
+                >
+                  <img width="40" :src="skill.media" />
+                  {{ skill.name }}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="input-group mb-3">
+              <input
+                v-model="masterXp"
+                type="number"
+                class="form-control"
+                placeholder="100"
+                @keyup.enter.native="handleAddMasterPollClick"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  @click="handleAddMasterPollClick"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
       <h2 style="display: flex; align-items: center">
         Add Item
         <i
