@@ -22,7 +22,7 @@ output.on('close', () => {
       if (err) {
         console.log(err);
       }
-    
+
       files.forEach(file => {
         if (file !== outname) {
           deleteSync(path.join('dist', file));

@@ -1,0 +1,225 @@
+<template id="x-bank-items">
+  <div class="x-bank-items-box">
+    <div class="col-12">
+      <div class="col">
+        <h2>Add GP</h2>
+        <div class="input-group mb-3">
+          <input
+            v-model="gp"
+            type="number"
+            class="form-control"
+            placeholder="100"
+            @keyup.enter.native="handleAddGp"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="handleAddGp"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="col">
+        <h2>Add Slayer Coins</h2>
+        <div class="input-group mb-3">
+          <input
+            v-model="slayerCoins"
+            type="number"
+            class="form-control"
+            placeholder="100"
+            @keyup.enter.native="handleAddSlayerCoins"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="handleAddSlayerCoins"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="col">
+        <h2>Add Prayer Points</h2>
+        <div class="input-group mb-3">
+          <input
+            v-model="prayerPoints"
+            type="number"
+            class="form-control"
+            placeholder="100"
+            @keyup.enter.native="handleAddPrayerPoints"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="handleAddPrayerPoints"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="col">
+        <h2>Add Raid Coins</h2>
+        <div class="input-group mb-3">
+          <input
+            v-model="raidCoins"
+            type="number"
+            class="form-control"
+            placeholder="100"
+            @keyup.enter.native="handleAddRaidCoins"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="handleAddRaidCoins"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <h2>Add XP</h2>
+      <div class="col-12">
+        <div class="row row-deck">
+          <div class="col">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ (skillSelect && skillSelect.name) || "select" }}
+              </button>
+              <div
+                class="dropdown-menu"
+                style="max-height: 400px; overflow-y: auto"
+              >
+                <a
+                  v-for="skill in skills"
+                  :key="skill.id"
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleSkillClick(skill)"
+                >
+                  <img width="40" :src="skill.media" />
+                  {{ skill.name }}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="input-group mb-3">
+              <input
+                v-model="xp"
+                type="number"
+                class="form-control"
+                placeholder="100"
+                @keyup.enter.native="handleAddSkillClick"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  @click="handleAddSkillClick"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <h2 style="display: flex; align-items: center">
+        Add Item
+        <i
+          v-show="addItemShow"
+          @click="hideAddItem(false)"
+          class="far fa-eye text-muted ml-2"
+          style="font-size: 16px"
+        ></i>
+        <i
+          v-show="!addItemShow"
+          @click="hideAddItem(true)"
+          class="far text-muted ml-2 fa-eye-slash"
+          style="font-size: 16px"
+        ></i>
+      </h2>
+      <div v-show="addItemShow" id="x-add-item" class="col-12">
+        <div v-for="(items, key) in listMap" :key="key" class="row row-deck">
+          <div class="col">
+            <label>{{ key }}</label>
+          </div>
+          <div class="col">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ (selectObj[key] && selectObj[key].name) || "select" }}
+              </button>
+              <div
+                class="dropdown-menu"
+                style="max-height: 400px; overflow-y: auto"
+              >
+                <a
+                  v-for="item in items"
+                  :key="item.id"
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleClick(key, item)"
+                  >{{ item.name }}</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <input
+                type="number"
+                :id="`${key}-input`"
+                class="form-control"
+                placeholder="100"
+                @keyup.enter.native="handleAdd(key)"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  @click="handleAdd(key)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
