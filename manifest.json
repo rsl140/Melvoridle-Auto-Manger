@@ -1,6 +1,6 @@
 {
   "namespace": "xMelvorAutoManger",
   "setup": "setup.mjs",
-  "load": ["templates/dialog.html", "templates/bankItems.html"],
+  "load": ["templates/dialog.html", "templates/bankItems.html", "templates/button.html", "templates/combat.html"],
   "icon": "img/M.png"
 }

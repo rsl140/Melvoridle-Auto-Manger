@@ -2,6 +2,8 @@
 // You can import script modules and have full type completion
 import Dialog from './Dialog/index.mjs';
 import BankItems from './BankItems/index.mjs';
+import XCombat from './Combat/index.mjs';
+import XButton from './Button/index.mjs';
 
 // Data
 // Game data for registration
@@ -27,20 +29,30 @@ export async function setup (ctx) {
   //   console.warn('Hello From My Mod!');
   // });
 
-  ctx.onInterfaceReady(() => {
+  ctx.onInterfaceReady(async () => {
     const dialog = Dialog({
       modalShow: false,
-      modalID: 'modal-cheat',
+      modalID: 'modal-x-cheat',
       modalTitle: 'Game Cheat',
-      // modalContent: `<img class="modBoilerplate__logo-img" src="${ctx.getResourceUrl(LargeIcon)}" />`
       modalContent: `<div id="x-table-Items"></div>`
     })
     ui.create(dialog, document.getElementById('page-container'));
     ui.create(BankItems({ select: 'select', ctx }), document.getElementById('x-table-Items'));
+
+    const combatDialog = Dialog({
+      modalShow: false,
+      modalID: 'modal-x-combat',
+      modalTitle: 'Game Cheat',
+      modalContent: `<div id="x-combat-dialog"></div>`
+    })
+    ui.create(combatDialog, document.getElementById('page-container'));
+    ui.create(XCombat({ select: 'select', ctx }), document.getElementById('x-combat-dialog'));
+    // ui.create(XButton({ ctx, dialog: combatDialog }), document.getElementById('combat-slayer-task-menu'));
+    ui.create(XButton({ ctx, dialog: combatDialog }), $('#combat-slayer-task-menu').children()[0]);
     sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheat', {
       icon: ctx.getResourceUrl(LargeSidebarIcon),
       onClick () {
-        dialog.open()
+        dialog.open();
       }
     });
   });

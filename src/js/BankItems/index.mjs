@@ -36,20 +36,19 @@ export default function BankItems (props) {
     raidCoins: '',
     xp: '',
     masterXp: '',
-    speed: 1,
+    speed: '',
     handleClick (key, val) {
       this.selectObj[key] = val
     },
     handleAdd (key) {
       const num = $(`#${key}-input`).val();
       if (!this.selectObj[key] || !num) {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       } else {
         game.bank.addItemByID(this.selectObj[key].id, +num, true, true, false);
         this.selectObj[key] = null;
         $(`#${key}-input`).val('');
+        fireBottomToast('success');
       }
     },
     hideAddItem (val) {
@@ -59,40 +58,36 @@ export default function BankItems (props) {
       if (this.gp) {
         game.gp.add(+this.gp);
         this.gp = '';
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     handleAddSlayerCoins () {
       if (this.slayerCoins) {
         game.slayerCoins.add(+this.slayerCoins);
         this.slayerCoins = '';
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     handleAddPrayerPoints () {
       if (this.prayerPoints) {
         game.combat.player.addPrayerPoints(+this.prayerPoints);
         this.prayerPoints = '';
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     handleAddRaidCoins () {
       if (this.raidCoins) {
         game.raidCoins.add(+this.raidCoins);
         this.raidCoins = '';
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     handleSkillClick (val) {
@@ -103,10 +98,9 @@ export default function BankItems (props) {
         game[this.skillSelect.id.toLowerCase()].addXP(+this.xp);
         this.xp = '';
         this.skillSelect = null;
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     handleMasterSkillClick (val, index) {
@@ -120,10 +114,9 @@ export default function BankItems (props) {
         game[this.masterSkillSelect.id.toLowerCase()].addMasteryPoolXP(+this.masterXp);
         this.masterXp = '';
         this.masterSkillSelect = null;
+        fireBottomToast('success');
       } else {
-        SwalLocale.fire({
-          title: 'add error'
-        });
+        fireBottomToast('add error');
       }
     },
     setSpeed () {
@@ -131,6 +124,8 @@ export default function BankItems (props) {
         this.ctx.patch(Skill, 'addXP').replace((o, amount, masteryAction) => {
           return o(amount * this.speed, masteryAction);
         });
+        this.speed = '';
+        fireBottomToast('success');
       }
     }
   };

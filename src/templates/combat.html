@@ -1,0 +1,94 @@
+<template id="x-combat">
+  <div class="x-bank-items-box">
+    <div class="row row-deck">
+      <div class="col-12">
+        <div class="col">
+          <button
+            class="btn btn-sm mr-2 mb-2"
+            :class="modeType === 'one' ? 'btn-success' : 'btn-secondary'"
+            @click="modeSelect('one')"
+          >
+            Just refresh slayer task with current attack monster. (Only select one monster.[Easy 1-49].)
+          </button>
+          <button
+            class="btn btn-sm mr-2 mb-2"
+            :class="modeType === 'more' ? 'btn-success' : 'btn-secondary'"
+            @click="modeSelect('more')"
+          >
+            switch attack monster with current slayer task.
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row row-deck">
+      <div class="col-12">
+        <div class="btn-group-toggle" data-toggle="buttons">
+          <h5 class="font-w700 text-combat-smoke mb-3">
+            Combat Area
+          </h5>
+          <div v-show="modeType !== 'one'" class="mb-3">
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="combatOption('all')">Select All</button>
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="combatOption('reverse')">Reverse Election</button>
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="combatOption('cancel')">Cancel All</button>
+          </div>
+          <button
+            v-for="item in combatAreaArr"
+            :key="item.id"
+            class="btn btn-sm mr-2 mb-2"
+            :class="combatCheckItems.indexOf(item.name) > -1 ? 'btn-success' : 'btn-secondary'"
+            :disabled="modeType === 'one' && (combatCheckItems.length > 0 || slayerCheckItems.length > 0) && combatCheckItems.indexOf(item.name) === -1"
+            @click="handleCombatClick(item)"
+          >
+            <img class="mr-2" width="30" height="30" :src="item.media">
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row row-deck">
+      <div class="col-12">
+        <div class="btn-group-toggle" data-toggle="buttons">
+          <h5 class="font-w700 text-combat-smoke mb-3 mt-3">
+            Slayer Area
+          </h5>
+          <div v-show="modeType !== 'one'" class="mb-3">
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="slayerOption('all')">Select All</button>
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="slayerOption('reverse')">Reverse Election</button>
+            <button type="button" class="btn btn-info m-b3 mr-3" @click="slayerOption('cancel')">Cancel All</button>
+          </div>
+          <button
+            v-for="item in slayerAreaArr"
+            :key="item.id"
+            class="btn btn-sm mr-2 mb-2"
+            :class="slayerCheckItems.indexOf(item.name) > -1 ? 'btn-success' : 'btn-secondary'"
+            :disabled="modeType === 'one' && (combatCheckItems.length > 0 || slayerCheckItems.length > 0) && slayerCheckItems.indexOf(item.name) === -1"
+            @click="handleSlayerClick(item)"
+          >
+            <img class="mr-2" width="30" height="30" :src="item.media">
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row row-deck mt-3 mb-3">
+      <!-- <div class="col">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="x-easy-mode">
+          <label class="custom-control-label" for="x-easy-mode">Easy Mode</label>
+        </div>
+      </div> -->
+      <div class="col">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
+          <label class="custom-control-label" for="x-auto-loot">Auto LootAll</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row row-deck">
+      <div class="col-12">
+        <button type="button" class="btn btn-primary" @click="start">Start</button>
+      </div>
+    </div>
+  </div>
+</template>
