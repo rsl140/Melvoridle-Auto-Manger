@@ -46,7 +46,7 @@ export async function setup (ctx) {
       modalContent: `<div id="x-combat-dialog"></div>`
     })
     ui.create(combatDialog, document.getElementById('page-container'));
-    ui.create(XCombat({ select: 'select', ctx }), document.getElementById('x-combat-dialog'));
+    ui.create(XCombat({ select: 'select', ctx, dialog: combatDialog }), document.getElementById('x-combat-dialog'));
     // ui.create(XButton({ ctx, dialog: combatDialog }), document.getElementById('combat-slayer-task-menu'));
     ui.create(XButton({ ctx, dialog: combatDialog }), $('#combat-slayer-task-menu').children()[0]);
     sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheat', {

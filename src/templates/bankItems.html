@@ -274,7 +274,10 @@
                   class="dropdown-item"
                   href="#"
                   @click="handleClick(key, item)"
-                  >{{ item.name }}</a
+                  >
+                  <img class="mr-2" width="30" height="30" :src="item.media">
+                  {{ item.name }}
+                  </a
                 >
               </div>
             </div>

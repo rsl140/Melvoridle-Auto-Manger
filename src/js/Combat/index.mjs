@@ -25,7 +25,10 @@ export default function XCombat (props) {
   return {
     $template: '#x-combat',
     ctx: props.ctx,
+    dialog: props.dialog,
     modeType: 'one',
+    combatShow: true,
+    slayerShow: true,
     // dungeonAreaArr,
     slayerAreaArr,
     combatAreaArr,
@@ -121,15 +124,8 @@ export default function XCombat (props) {
             // game.combat.slayerTask.renderRequired = false;
             this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
           }
-          const autoLootAll = $('#x-auto-loot')[0].checked;
+
           this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
-            if (autoLootAll) {
-              const drops = game.combat.loot.drops;
-              const count = drops.length;
-              if (count > 0) {
-                game.combat.loot.lootAll();
-              }
-            }
             if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
               this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
             }
@@ -140,7 +136,20 @@ export default function XCombat (props) {
             const min = Math.min(...skillLvArr);
             const index = skillLvArr.indexOf(min);
             game.combat.player.setAttackStyle(skillName[obj[index]].attackType, skillName[obj[index]]);
+
+            const autoLootAll = $('#x-auto-loot')[0].checked;
+            if (autoLootAll) {
+              const drops = game.combat.loot.drops;
+              const count = drops.length;
+              if (count > 0) {
+                game.combat.loot.lootAll();
+              }
+              console.log('autoLootAll');
+            } else {
+              console.log('closeAutoLootAll');
+            }
           });
+          this.dialog.close()
         } else {
           fireBottomToast('no combat item select!');
         }

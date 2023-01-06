@@ -25,6 +25,18 @@
         <div class="btn-group-toggle" data-toggle="buttons">
           <h5 class="font-w700 text-combat-smoke mb-3">
             Combat Area
+            <i
+              v-show="combatShow"
+              @click="combatShow = false"
+              class="far fa-eye text-muted ml-2"
+              style="font-size: 16px"
+            ></i>
+            <i
+              v-show="!combatShow"
+              @click="combatShow = true"
+              class="far text-muted ml-2 fa-eye-slash"
+              style="font-size: 16px"
+            ></i>
           </h5>
           <div v-show="modeType !== 'one'" class="mb-3">
             <button type="button" class="btn btn-info m-b3 mr-3" @click="combatOption('all')">Select All</button>
@@ -34,6 +46,7 @@
           <button
             v-for="item in combatAreaArr"
             :key="item.id"
+            v-show="combatShow"
             class="btn btn-sm mr-2 mb-2"
             :class="combatCheckItems.indexOf(item.name) > -1 ? 'btn-success' : 'btn-secondary'"
             :disabled="modeType === 'one' && (combatCheckItems.length > 0 || slayerCheckItems.length > 0) && combatCheckItems.indexOf(item.name) === -1"
@@ -50,6 +63,18 @@
         <div class="btn-group-toggle" data-toggle="buttons">
           <h5 class="font-w700 text-combat-smoke mb-3 mt-3">
             Slayer Area
+            <i
+              v-show="slayerShow"
+              @click="slayerShow = false"
+              class="far fa-eye text-muted ml-2"
+              style="font-size: 16px"
+            ></i>
+            <i
+              v-show="!slayerShow"
+              @click="slayerShow = true"
+              class="far text-muted ml-2 fa-eye-slash"
+              style="font-size: 16px"
+            ></i>
           </h5>
           <div v-show="modeType !== 'one'" class="mb-3">
             <button type="button" class="btn btn-info m-b3 mr-3" @click="slayerOption('all')">Select All</button>
@@ -59,6 +84,7 @@
           <button
             v-for="item in slayerAreaArr"
             :key="item.id"
+            v-show="slayerShow"
             class="btn btn-sm mr-2 mb-2"
             :class="slayerCheckItems.indexOf(item.name) > -1 ? 'btn-success' : 'btn-secondary'"
             :disabled="modeType === 'one' && (combatCheckItems.length > 0 || slayerCheckItems.length > 0) && slayerCheckItems.indexOf(item.name) === -1"

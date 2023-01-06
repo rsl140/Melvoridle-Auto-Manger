@@ -1,14 +1,14 @@
-import tableOfItems from '../../data/tableOfItems.json';
-const map = new Map()
-
-tableOfItems.forEach(val => {
-  if (map.has(val.category)) {
-    map.get(val.category).push(val)
+const gameItems = new Map()
+game.items.allObjects.forEach(val => {
+  if (gameItems.has(val.category)) {
+    gameItems.get(val.category).push(val)
   } else {
-    map.set(val.category, [val])
+    if (val.category) {
+      gameItems.set(val.category, [val])
+    }
   }
 })
-const obj = [...map.entries()].reduce((obj, [key, value]) => (obj[key] = value, obj), {})
+const gameItemsObj = [...gameItems.entries()].reduce((obj, [key, value]) => (obj[key] = value, obj), {})
 const skills = []
 game.skills.forEach((val) => {
   skills.push({
@@ -25,8 +25,7 @@ export default function BankItems (props) {
     skills,
     skillSelect: null,
     masterSkillSelect: null,
-    list: tableOfItems,
-    listMap: obj,
+    listMap: gameItemsObj,
     select: props.select,
     selectObj: {},
     addItemShow: true,
