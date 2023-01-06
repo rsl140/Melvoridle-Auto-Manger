@@ -1,18 +1,18 @@
-export default function Counter(props) {
+export default function Counter (props) {
   return {
     $template: '#x-dialog',
     modalShow: props.modalShow,
     modalID: props.modalID,
     modalTitle: props.modalTitle,
     modalContent: props.modalContent,
-    close() {
+    close () {
       // $(`#${this.modalID}`).remove();
       this.modalShow = false
     },
-    open() {
+    open () {
       this.modalShow = true
     },
-    add() {
+    add () {
       this.modalContent = 'html';
     }
   };

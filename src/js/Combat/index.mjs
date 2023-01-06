@@ -20,6 +20,17 @@ function getMonsters (list) {
   return { arr, obj };
 }
 
+function lootAllBtn () {
+  const div = document.createElement('div')
+  div.className = 'block-content pt-0 pb-3'
+  div.innerHTML = `
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
+      <label class="custom-control-label" for="x-auto-loot">Auto LootAll</label>
+    </div>
+  `
+  $('#combat-loot').prepend(div);
+}
 
 export default function XCombat (props) {
   return {
@@ -36,6 +47,7 @@ export default function XCombat (props) {
     slayerAreaObj,
     combatCheckItems: [],
     slayerCheckItems: [],
+    isFirst: true,
     handleCombatClick (item) {
       const hasIndex = this.combatCheckItems.indexOf(item.name);
       if (hasIndex > -1) {
@@ -115,6 +127,9 @@ export default function XCombat (props) {
       return obj;
     },
     start () {
+      if ($('#x-auto-loot').length === 0) {
+        lootAllBtn();
+      }
       if (this.modeType === 'one') {
         if (this.combatCheckItems.length > 0) {
           game.combat.selectMonster(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id), game.getMonsterArea(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id)))
@@ -125,30 +140,31 @@ export default function XCombat (props) {
             this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
           }
 
-          this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
-            if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
-              this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
-            }
-
-            const skillName = this.getAttackStyles();
-            const obj = { 0: 'Stab', 1: 'Slash', 2: 'Block' };
-            const skillLvArr = [game.attack.level, game.strength.level, game.defence.level];
-            const min = Math.min(...skillLvArr);
-            const index = skillLvArr.indexOf(min);
-            game.combat.player.setAttackStyle(skillName[obj[index]].attackType, skillName[obj[index]]);
-
-            const autoLootAll = $('#x-auto-loot')[0].checked;
-            if (autoLootAll) {
-              const drops = game.combat.loot.drops;
-              const count = drops.length;
-              if (count > 0) {
-                game.combat.loot.lootAll();
+          if (this.isFirst) {
+            this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
+              if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
+                this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
               }
-              console.log('autoLootAll');
-            } else {
-              console.log('closeAutoLootAll');
-            }
-          });
+
+              const skillName = this.getAttackStyles();
+              const obj = { 0: 'Stab', 1: 'Slash', 2: 'Block' };
+              const skillLvArr = [game.attack.level, game.strength.level, game.defence.level];
+              const min = Math.min(...skillLvArr);
+              const index = skillLvArr.indexOf(min);
+              game.combat.player.setAttackStyle(skillName[obj[index]].attackType, skillName[obj[index]]);
+
+              const autoLootAll = $('#x-auto-loot')[0].checked;
+              if (autoLootAll) {
+                const drops = game.combat.loot.drops;
+                const count = drops.length;
+                if (count > 0) {
+                  game.combat.loot.lootAll();
+                }
+              }
+            });
+            this.isFirst = false
+          };
+
           this.dialog.close()
         } else {
           fireBottomToast('no combat item select!');

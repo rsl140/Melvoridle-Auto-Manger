@@ -47,8 +47,9 @@ export async function setup (ctx) {
     })
     ui.create(combatDialog, document.getElementById('page-container'));
     ui.create(XCombat({ select: 'select', ctx, dialog: combatDialog }), document.getElementById('x-combat-dialog'));
-    // ui.create(XButton({ ctx, dialog: combatDialog }), document.getElementById('combat-slayer-task-menu'));
     ui.create(XButton({ ctx, dialog: combatDialog }), $('#combat-slayer-task-menu').children()[0]);
+
+    // sidebar button
     sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheat', {
       icon: ctx.getResourceUrl(LargeSidebarIcon),
       onClick () {
