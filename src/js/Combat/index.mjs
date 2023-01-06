@@ -20,21 +20,10 @@ function getMonsters (list) {
   return { arr, obj };
 }
 
-function lootAllBtn () {
-  const div = document.createElement('div')
-  div.className = 'block-content pt-0 pb-3'
-  div.innerHTML = `
-    <div class="custom-control custom-switch">
-      <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
-      <label class="custom-control-label" for="x-auto-loot">Auto LootAll</label>
-    </div>
-  `
-  $('#combat-loot').prepend(div);
-}
-
 export default function XCombat (props) {
   return {
     $template: '#x-combat',
+    lang: props.lang,
     ctx: props.ctx,
     dialog: props.dialog,
     modeType: 'one',
@@ -48,6 +37,17 @@ export default function XCombat (props) {
     combatCheckItems: [],
     slayerCheckItems: [],
     isFirst: true,
+    lootAllBtn () {
+      const div = document.createElement('div')
+      div.className = 'block-content pt-0 pb-3'
+      div.innerHTML = `
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
+          <label class="custom-control-label" for="x-auto-loot">${this.lang.combat.autoLootAll}</label>
+        </div>
+      `
+      $('#combat-loot').prepend(div);
+    },
     handleCombatClick (item) {
       const hasIndex = this.combatCheckItems.indexOf(item.name);
       if (hasIndex > -1) {
@@ -128,7 +128,7 @@ export default function XCombat (props) {
     },
     start () {
       if ($('#x-auto-loot').length === 0) {
-        lootAllBtn();
+        this.lootAllBtn();
       }
       if (this.modeType === 'one') {
         if (this.combatCheckItems.length > 0) {

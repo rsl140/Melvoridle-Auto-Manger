@@ -5,6 +5,10 @@ import BankItems from './BankItems/index.mjs';
 import XCombat from './Combat/index.mjs';
 import XButton from './Button/index.mjs';
 
+// js
+import lang from '../lang/index.js';
+
+
 // Data
 // Game data for registration
 import ModData from '../data/data.json';
@@ -17,7 +21,7 @@ import '../css/styles.css';
 // To bundle your mod's icon
 import '../img/M.png';
 // Reference images using `ctx.getResourceUrl`
-import LargeIcon from '../img/M_large.png';
+// import LargeIcon from '../img/M_large.png';
 import LargeSidebarIcon from '../img/icon_large.png';
 
 /**
@@ -30,27 +34,31 @@ export async function setup (ctx) {
   // });
 
   ctx.onInterfaceReady(async () => {
+    let currentLang = lang[setLang]
+    if (!currentLang) {
+      currentLang = lang['en']
+    }
     const dialog = Dialog({
       modalShow: false,
       modalID: 'modal-x-cheat',
-      modalTitle: 'Game Cheat',
+      modalTitle: currentLang.cheating.name,
       modalContent: `<div id="x-table-Items"></div>`
     })
     ui.create(dialog, document.getElementById('page-container'));
-    ui.create(BankItems({ select: 'select', ctx }), document.getElementById('x-table-Items'));
+    ui.create(BankItems({ select: 'select', ctx, lang: currentLang }), document.getElementById('x-table-Items'));
 
     const combatDialog = Dialog({
       modalShow: false,
       modalID: 'modal-x-combat',
-      modalTitle: 'Game Cheat',
+      modalTitle: currentLang.button.slayerSetting,
       modalContent: `<div id="x-combat-dialog"></div>`
     })
     ui.create(combatDialog, document.getElementById('page-container'));
-    ui.create(XCombat({ select: 'select', ctx, dialog: combatDialog }), document.getElementById('x-combat-dialog'));
-    ui.create(XButton({ ctx, dialog: combatDialog }), $('#combat-slayer-task-menu').children()[0]);
+    ui.create(XCombat({ select: 'select', ctx, dialog: combatDialog, lang: currentLang }), document.getElementById('x-combat-dialog'));
+    ui.create(XButton({ ctx, dialog: combatDialog, lang: currentLang }), $('#combat-slayer-task-menu').children()[0]);
 
     // sidebar button
-    sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item('Game Cheat', {
+    sidebar.category('X Auto Manger', { toggleable: true, after: 'Modding' }).item(currentLang.cheating.name, {
       icon: ctx.getResourceUrl(LargeSidebarIcon),
       onClick () {
         dialog.open();

@@ -1,127 +1,123 @@
 <template id="x-bank-items">
   <div class="x-bank-items-box">
+    <div class="row row-deck">
+      <div class="col-12 mb-4">
+        <div class="x-tips">{{ lang.cheating.tips }}</div>
+      </div>
+    </div>
+
     <div class="col-12">
-      <div class="col">
-        <h2>Set Get XP Speed</h2>
-        <div class="input-group mb-3">
-          <input
-            v-model="speed"
-            type="number"
-            class="form-control"
-            placeholder="1"
-            @keyup.enter.native="setSpeed"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="setSpeed"
-            >
-              +
-            </button>
-          </div>
+      <h4>{{ lang.cheating.xpSpeed }}</h4>
+      <div class="input-group col mb-3">
+        <input
+          v-model="speed"
+          type="number"
+          class="form-control"
+          placeholder="1"
+          @keyup.enter.native="setSpeed"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="setSpeed"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
     <div class="col-12">
-      <div class="col">
-        <h2>Add GP</h2>
-        <div class="input-group mb-3">
-          <input
-            v-model="gp"
-            type="number"
-            class="form-control"
-            placeholder="100"
-            @keyup.enter.native="handleAddGp"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="handleAddGp"
-            >
-              +
-            </button>
-          </div>
+      <h4>{{ lang.cheating.addGp }}</h4>
+      <div class="input-group col mb-3">
+        <input
+          v-model="gp"
+          type="number"
+          class="form-control"
+          placeholder="100"
+          @keyup.enter.native="handleAddGp"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="handleAddGp"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
     <div class="col-12">
-      <div class="col">
-        <h2>Add Slayer Coins</h2>
-        <div class="input-group mb-3">
-          <input
-            v-model="slayerCoins"
-            type="number"
-            class="form-control"
-            placeholder="100"
-            @keyup.enter.native="handleAddSlayerCoins"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="handleAddSlayerCoins"
-            >
-              +
-            </button>
-          </div>
+      <h4>{{ lang.cheating.addSlayerCoins }}</h4>
+      <div class="input-group col mb-3">
+        <input
+          v-model="slayerCoins"
+          type="number"
+          class="form-control"
+          placeholder="100"
+          @keyup.enter.native="handleAddSlayerCoins"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="handleAddSlayerCoins"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
     <div class="col-12">
-      <div class="col">
-        <h2>Add Prayer Points</h2>
-        <div class="input-group mb-3">
-          <input
-            v-model="prayerPoints"
-            type="number"
-            class="form-control"
-            placeholder="100"
-            @keyup.enter.native="handleAddPrayerPoints"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="handleAddPrayerPoints"
-            >
-              +
-            </button>
-          </div>
+      <h4>{{ lang.cheating.addPrayerPoints }}</h4>
+      <div class="input-group col mb-3">
+        <input
+          v-model="prayerPoints"
+          type="number"
+          class="form-control"
+          placeholder="100"
+          @keyup.enter.native="handleAddPrayerPoints"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="handleAddPrayerPoints"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
     <div class="col-12">
-      <div class="col">
-        <h2>Add Raid Coins</h2>
-        <div class="input-group mb-3">
-          <input
-            v-model="raidCoins"
-            type="number"
-            class="form-control"
-            placeholder="100"
-            @keyup.enter.native="handleAddRaidCoins"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="handleAddRaidCoins"
-            >
-              +
-            </button>
-          </div>
+      <h4>{{ lang.cheating.addRaidCoins }}</h4>
+      <div class="input-group col mb-3">
+        <input
+          v-model="raidCoins"
+          type="number"
+          class="form-control"
+          placeholder="100"
+          @keyup.enter.native="handleAddRaidCoins"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="handleAddRaidCoins"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
     <div class="col-12">
-      <h2>Add XP</h2>
+      <h4>{{ lang.cheating.addXp }}</h4>
       <div class="col-12">
         <div class="row row-deck">
           <div class="col">
@@ -177,7 +173,7 @@
     </div>
 
     <div class="col-12">
-      <h2>Add Mastery XP to Pool</h2>
+      <h4>{{ lang.cheating.addMasteryXpToPool }}</h4>
       <div class="col-12">
         <div class="row row-deck">
           <div class="col">
@@ -234,8 +230,8 @@
     </div>
 
     <div class="col-12">
-      <h2 style="display: flex; align-items: center">
-        Add Item
+      <h4 style="display: flex; align-items: center">
+        {{ lang.cheating.addItem }}
         <i
           v-show="addItemShow"
           @click="hideAddItem(false)"
@@ -248,56 +244,60 @@
           class="far text-muted ml-2 fa-eye-slash"
           style="font-size: 16px"
         ></i>
-      </h2>
+      </h4>
       <div v-show="addItemShow" id="x-add-item" class="col-12">
-        <div v-for="(items, key) in listMap" :key="key" class="row row-deck">
-          <div class="col">
-            <label>{{ key }}</label>
-          </div>
-          <div class="col">
-            <div class="dropdown">
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                {{ (selectObj[key] && selectObj[key].name) || "select" }}
-              </button>
-              <div
-                class="dropdown-menu"
-                style="max-height: 400px; overflow-y: auto"
-              >
-                <a
-                  v-for="item in items"
-                  :key="item.id"
-                  class="dropdown-item"
-                  href="#"
-                  @click="handleClick(key, item)"
-                >
-                  <img class="mr-2" width="30" height="30" :src="item.media" />
-                  {{ item.name }}
-                </a>
-              </div>
+        <div v-for="(items, key) in listMap" :key="key">
+          <div class="row row-deck">
+            <div class="col mb-3">
+              <label>{{ key }}</label>
             </div>
           </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <input
-                type="number"
-                :id="`${key}-input`"
-                class="form-control"
-                placeholder="100"
-                @keyup.enter.native="handleAdd(key)"
-              />
-              <div class="input-group-append">
+          <div class="row row-deck">
+            <div class="col">
+              <div class="dropdown">
                 <button
-                  class="btn btn-outline-secondary"
+                  class="btn btn-secondary dropdown-toggle"
                   type="button"
-                  @click="handleAdd(key)"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
                 >
-                  +
+                  {{ (selectObj[key] && selectObj[key].name) || "select" }}
                 </button>
+                <div
+                  class="dropdown-menu"
+                  style="max-height: 400px; overflow-y: auto"
+                >
+                  <a
+                    v-for="item in items"
+                    :key="item.id"
+                    class="dropdown-item"
+                    href="#"
+                    @click="handleClick(key, item)"
+                  >
+                    <img class="mr-2" width="30" height="30" :src="item.media" />
+                    {{ item.name }}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <input
+                  type="number"
+                  :id="`${key}-input`"
+                  class="form-control"
+                  placeholder="100"
+                  @keyup.enter.native="handleAdd(key)"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    @click="handleAdd(key)"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
           </div>

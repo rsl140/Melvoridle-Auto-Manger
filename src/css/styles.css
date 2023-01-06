@@ -20,3 +20,9 @@
   padding: 1.25rem 1.25rem;
   box-sizing: border-box;
 }
+
+.x-tips {
+  color: #e56767;
+  font-size: 1.875rem;
+  font-weight: 600;
+}

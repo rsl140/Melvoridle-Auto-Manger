@@ -8,15 +8,14 @@
             :class="modeType === 'one' ? 'btn-success' : 'btn-secondary'"
             @click="modeSelect('one')"
           >
-            Just refresh slayer task with current attack monster. (Only select
-            one monster.[Easy 1-49].)
+            {{ lang.combat.modeTypeBtn1 }}
           </button>
           <button
             class="btn btn-sm mr-2 mb-2"
             :class="modeType === 'more' ? 'btn-success' : 'btn-secondary'"
             @click="modeSelect('more')"
           >
-            switch attack monster with current slayer task.
+            {{ lang.combat.modeTypeBtn2 }}
           </button>
         </div>
       </div>
@@ -25,7 +24,7 @@
       <div class="col-12">
         <div class="btn-group-toggle" data-toggle="buttons">
           <h5 class="font-w700 text-combat-smoke mb-3">
-            Combat Area
+            {{ lang.combat.combatArea }}
             <i
               v-show="combatShow"
               @click="combatShow = false"
@@ -45,21 +44,21 @@
               class="btn btn-info m-b3 mr-3"
               @click="combatOption('all')"
             >
-              Select All
+              {{ lang.combat.selectAll }}
             </button>
             <button
               type="button"
               class="btn btn-info m-b3 mr-3"
               @click="combatOption('reverse')"
             >
-              Reverse Election
+              {{ lang.combat.reverseElection }}
             </button>
             <button
               type="button"
               class="btn btn-info m-b3 mr-3"
               @click="combatOption('cancel')"
             >
-              Cancel All
+              {{ lang.combat.cancelAll }}
             </button>
           </div>
           <button
@@ -81,7 +80,7 @@
       <div class="col-12">
         <div class="btn-group-toggle" data-toggle="buttons">
           <h5 class="font-w700 text-combat-smoke mb-3 mt-3">
-            Slayer Area
+            {{ lang.combat.slayerArea }}
             <i
               v-show="slayerShow"
               @click="slayerShow = false"
@@ -101,21 +100,21 @@
               class="btn btn-info m-b3 mr-3"
               @click="slayerOption('all')"
             >
-              Select All
+              {{ lang.combat.selectAll }}
             </button>
             <button
               type="button"
               class="btn btn-info m-b3 mr-3"
               @click="slayerOption('reverse')"
             >
-              Reverse Election
+              {{ lang.combat.reverseElection }}
             </button>
             <button
               type="button"
               class="btn btn-info m-b3 mr-3"
               @click="slayerOption('cancel')"
             >
-              Cancel All
+              {{ lang.combat.cancelAll }}
             </button>
           </div>
           <button
@@ -151,7 +150,7 @@
     <div class="row row-deck">
       <div class="col-12">
         <button type="button" class="btn btn-primary" @click="start">
-          Start
+          {{ lang.combat.start }}
         </button>
       </div>
     </div>

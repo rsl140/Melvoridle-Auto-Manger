@@ -21,6 +21,7 @@ game.skills.forEach((val) => {
 export default function BankItems (props) {
   return {
     $template: '#x-bank-items',
+    lang: props.lang,
     ctx: props.ctx,
     skills,
     skillSelect: null,
