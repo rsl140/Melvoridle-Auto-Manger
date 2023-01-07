@@ -20,7 +20,8 @@ const zh = {
     "reverseElection": "反选",
     "cancelAll": "取消所有",
     "start": "开始",
-    "autoLootAll": "自动拾取"
+    "autoLootAll": "自动拾取",
+    "autoAttackStyles": '自动切换'
   },
   "button": {
     "slayerSetting": "屠杀者任务设置"

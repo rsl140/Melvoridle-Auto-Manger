@@ -20,7 +20,8 @@ const en = {
     "reverseElection": "Reverse Election",
     "cancelAll": "Cancel All",
     "start": "start",
-    "autoLootAll": "Auto LootAll"
+    "autoLootAll": "Auto LootAll",
+    "autoAttackStyles": 'Auto Attack Styles'
   },
   "button": {
     "slayerSetting": "Slayer Setting"

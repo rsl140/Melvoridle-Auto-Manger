@@ -37,17 +37,6 @@ export default function XCombat (props) {
     combatCheckItems: [],
     slayerCheckItems: [],
     isFirst: true,
-    lootAllBtn () {
-      const div = document.createElement('div')
-      div.className = 'block-content pt-0 pb-3'
-      div.innerHTML = `
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
-          <label class="custom-control-label" for="x-auto-loot">${this.lang.combat.autoLootAll}</label>
-        </div>
-      `
-      $('#combat-loot').prepend(div);
-    },
     handleCombatClick (item) {
       const hasIndex = this.combatCheckItems.indexOf(item.name);
       if (hasIndex > -1) {
@@ -113,54 +102,24 @@ export default function XCombat (props) {
           break;
       }
     },
-    renderTask (monster) {
-      game.combat.slayerTask.monster = monster;
-      game.combat.slayerTask.tier = 0;
-      game.combat.slayerTask.killsLeft = 100;
-      game.combat.slayerTask.renderTask();
-    },
-    getAttackStyles () {
-      const obj = {};
-      game.attackStyles.forEach(e => {
-        obj[e.localID] = e;
-      });
-      return obj;
+    renderTask (monster, tier, killsLeft) {
+      if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
+        game.combat.slayerTask.monster = monster;
+        game.combat.slayerTask.tier = tier;
+        game.combat.slayerTask.killsLeft = killsLeft;
+        game.combat.slayerTask.renderTask();
+      }
     },
     start () {
-      if ($('#x-auto-loot').length === 0) {
-        this.lootAllBtn();
-      }
       if (this.modeType === 'one') {
         if (this.combatCheckItems.length > 0) {
-          game.combat.selectMonster(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id), game.getMonsterArea(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id)))
-          if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
-            // combatMenus.slayerTask.setTaskMonster(game.monsters.getObjectByID('melvorD:Plant'), 100, 0);
-            // combatMenus.slayerTask.updateTaskExtension(false, 100);
-            // game.combat.slayerTask.renderRequired = false;
-            this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
-          }
+          const targetMonsterId = game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id)
+          game.combat.selectMonster(targetMonsterId, game.getMonsterArea(targetMonsterId))
+          this.renderTask(targetMonsterId, 0 , 100);
 
           if (this.isFirst) {
             this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
-              if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
-                this.renderTask(game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id));
-              }
-
-              const skillName = this.getAttackStyles();
-              const obj = { 0: 'Stab', 1: 'Slash', 2: 'Block' };
-              const skillLvArr = [game.attack.level, game.strength.level, game.defence.level];
-              const min = Math.min(...skillLvArr);
-              const index = skillLvArr.indexOf(min);
-              game.combat.player.setAttackStyle(skillName[obj[index]].attackType, skillName[obj[index]]);
-
-              const autoLootAll = $('#x-auto-loot')[0].checked;
-              if (autoLootAll) {
-                const drops = game.combat.loot.drops;
-                const count = drops.length;
-                if (count > 0) {
-                  game.combat.loot.lootAll();
-                }
-              }
+              this.renderTask(targetMonsterId, 0 , 100);
             });
             this.isFirst = false
           };
