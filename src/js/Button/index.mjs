@@ -4,7 +4,11 @@ export function xSlayerButton (props) {
     lang: props.lang,
     dialog: props.dialog,
     handleClick () {
-      this.dialog.open()
+      if (game.combat.isActive) {
+        // stop now combat
+        combatMenus.runButton.click();
+      }
+      this.dialog.open();
     }
   }
 }
@@ -13,15 +17,20 @@ export function xAutoLootButton (ctx, lang) {
   if ($('#x-auto-loot').length !== 0) {
     return
   }
+  const isCheck = ctx.characterStorage.getItem('x-auto-loot');
   const div = document.createElement('div')
   div.className = 'block-content pt-0 pb-3'
   div.innerHTML = `
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
+          <input type="checkbox" class="custom-control-input" id="x-auto-loot" ${isCheck ? 'checked' : ''}>
           <label class="custom-control-label" for="x-auto-loot">${lang.combat.autoLootAll}</label>
         </div>
       `
-  $('#combat-loot').prepend(div)
+  $('#combat-loot').prepend(div);
+
+  $("#x-auto-loot").on("change",function(){
+    ctx.characterStorage.setItem('x-auto-loot', this.checked);
+  });
 
   ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
     const autoLootAll = $('#x-auto-loot')[0].checked;
@@ -40,15 +49,20 @@ export function xAttackStyles (ctx, lang) {
   if ($('#x-attack-styles').length !== 0) {
     return
   }
+  const isCheck = ctx.characterStorage.getItem('x-attack-styles');
   const div = document.createElement('div')
   div.className = 'block-content pb-0 pb-3'
   div.innerHTML = `
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="x-attack-styles" checked>
+          <input type="checkbox" class="custom-control-input" id="x-attack-styles" ${isCheck ? 'checked' : ''}>
           <label class="custom-control-label" for="x-attack-styles">${lang.combat.autoAttackStyles}</label>
         </div>
       `
-  $('#combat-slayer-task-menu').next().append(div)
+  $('#combat-slayer-task-menu').next().append(div);
+
+  $("#x-attack-styles").on("change",function(){
+    ctx.characterStorage.setItem('x-attack-styles', this.checked);
+  });
 
   function getAttackStyles () {
     const obj = {};

@@ -2,21 +2,38 @@
   <div class="x-bank-items-box">
     <div class="row row-deck">
       <div class="col-12">
-        <div class="col">
+        <button
+          class="btn btn-sm mr-2 mb-2"
+          :class="modeType === 'one' ? 'btn-success' : 'btn-secondary'"
+          @click="modeSelect('one')"
+        >
+          {{ lang.combat.modeTypeBtn1 }}
+        </button>
+        <button
+          class="btn btn-sm mr-2 mb-2"
+          :class="modeType === 'skip' ? 'btn-success' : 'btn-secondary'"
+          @click="modeSelect('skip')"
+        >
+          {{ lang.combat.modeTypeBtn2 }}
+        </button>
+      </div>
+    </div>
+    <div class="row row-deck pt-3 pb-3">
+      <div class="col-12">
+        <div
+          v-show="modeType === 'skip'"
+          class="btn-group-toggle"
+          data-toggle="buttons"
+        >
           <button
+            v-for="(item, index) in slayerTaskType"
+            :key="item.engDisplay"
             class="btn btn-sm mr-2 mb-2"
-            :class="modeType === 'one' ? 'btn-success' : 'btn-secondary'"
-            @click="modeSelect('one')"
+            :class="slayerTaskTypeSelect === index ? 'btn-success' : 'btn-secondary'"
+            @click="handleSlayerTaskType(index)"
           >
-            {{ lang.combat.modeTypeBtn1 }}
+            {{ item.display }} [{{item.minLevel}} - {{item.maxLevel}}]
           </button>
-          <!-- <button
-            class="btn btn-sm mr-2 mb-2"
-            :class="modeType === 'more' ? 'btn-success' : 'btn-secondary'"
-            @click="modeSelect('more')"
-          >
-            {{ lang.combat.modeTypeBtn2 }}
-          </button> -->
         </div>
       </div>
     </div>
@@ -131,20 +148,6 @@
           </button>
         </div>
       </div>
-    </div>
-    <div class="row row-deck mt-3 mb-3">
-      <!-- <div class="col">
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="x-easy-mode">
-          <label class="custom-control-label" for="x-easy-mode">Easy Mode</label>
-        </div>
-      </div> -->
-      <!-- <div class="col">
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="x-auto-loot" checked>
-          <label class="custom-control-label" for="x-auto-loot">Auto LootAll</label>
-        </div>
-      </div> -->
     </div>
 
     <div class="row row-deck">

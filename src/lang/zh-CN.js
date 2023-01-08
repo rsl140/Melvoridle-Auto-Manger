@@ -13,7 +13,7 @@ const zh = {
   },
   "combat": {
     "modeTypeBtn1": "根据当前目标刷新屠杀者任务(只支持简单模式[1-49])",
-    "modeTypeBtn2": "根据当前屠杀者任务刷新当前目标怪",
+    "modeTypeBtn2": "跳过怪物[根据更新的屠杀者任务跳转攻击目标]",
     "combatArea": "战斗区域怪物",
     "slayerArea": "屠杀者区域怪物",
     "selectAll": "全选",

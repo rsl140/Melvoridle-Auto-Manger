@@ -37,6 +37,8 @@ export default function XCombat (props) {
     combatCheckItems: [],
     slayerCheckItems: [],
     isFirst: true,
+    slayerTaskType: SlayerTask.data,
+    slayerTaskTypeSelect: 0,
     handleCombatClick (item) {
       const hasIndex = this.combatCheckItems.indexOf(item.name);
       if (hasIndex > -1) {
@@ -83,6 +85,9 @@ export default function XCombat (props) {
         this.slayerCheckItems.push(item.name);
       }
     },
+    handleSlayerTaskType (index) {
+      this.slayerTaskTypeSelect = index
+    },
     slayerOption (type) {
       switch (type) {
         case 'all':
@@ -110,24 +115,53 @@ export default function XCombat (props) {
         game.combat.slayerTask.renderTask();
       }
     },
+    skipMonster () {
+      const areaData = game.getMonsterArea(game.combat.slayerTask.monster)
+      const slayerMonsterName = game.combat.slayerTask.monster.name || ''
+
+      // Is equip the items
+      let slayerLevelReq = 0;
+      if (areaData instanceof SlayerArea) {
+        slayerLevelReq = areaData.slayerLevelRequired;
+      }
+      const canCombat = game.checkRequirements(areaData.entryRequirements, false, slayerLevelReq)
+
+      if (!canCombat || this.combatCheckItems.indexOf(slayerMonsterName) > -1 || this.slayerCheckItems.indexOf(slayerMonsterName) > -1) {
+        const tier = this.slayerTaskTypeSelect;
+        game.combat.slayerTask.selectTask(tier, false, false);
+      } else {
+        game.combat.slayerTask.jumpToTaskOnClick()
+      }
+    },
     start () {
-      if (this.modeType === 'one') {
-        if (this.combatCheckItems.length > 0) {
+      if (this.combatCheckItems.length > 0 || this.slayerCheckItems.length > 0) {
+        if (this.modeType === 'one' && this.combatCheckItems.length > 0) {
           const targetMonsterId = game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id)
           game.combat.selectMonster(targetMonsterId, game.getMonsterArea(targetMonsterId))
-          this.renderTask(targetMonsterId, 0 , 100);
-
-          if (this.isFirst) {
-            this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
-              this.renderTask(targetMonsterId, 0 , 100);
-            });
-            this.isFirst = false
-          };
-
-          this.dialog.close()
-        } else {
-          fireBottomToast('no combat item select!');
+          this.renderTask(targetMonsterId, 0, 100);
+        } else if (this.modeType === 'skip') {
+          // SlayerTask.data
+          this.skipMonster();
         }
+
+        if (this.isFirst) {
+          this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
+            if (this.modeType === 'one') {
+              this.renderTask(targetMonsterId, 0, 100);
+            }
+          });
+
+          this.ctx.patch(SlayerTask, 'setTask').after(() => {
+            if (this.modeType === 'skip') {
+              this.skipMonster();
+            }
+          });
+          this.isFirst = false
+        };
+
+        this.dialog.close()
+      } else {
+        fireBottomToast('no combat item select!');
       }
     }
   };

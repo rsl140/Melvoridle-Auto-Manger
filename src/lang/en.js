@@ -13,7 +13,7 @@ const en = {
   },
   "combat": {
     "modeTypeBtn1": "Just refresh slayer task with current attack monster. (Only select one monster.[Easy 1-49].)",
-    "modeTypeBtn2": "switch attack monster with current slayer task.",
+    "modeTypeBtn2": "Skip Monster.[Jump attack targets based on updated Slayer quests]",
     "combatArea": "Combat Area",
     "slayerArea": "Slayer Area",
     "selectAll": "Select All",
