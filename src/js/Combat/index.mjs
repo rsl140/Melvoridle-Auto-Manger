@@ -9,6 +9,7 @@ function getMonsters (list) {
     if (e.monsters.length > 0) {
       e.monsters.forEach(ele => {
         arr.push({
+          key: ele.id,
           id: ele.localID,
           name: ele.name,
           media: ele.media
@@ -34,6 +35,7 @@ export default function XCombat (props) {
     combatAreaArr,
     combatAreaObj,
     slayerAreaObj,
+    checkItem: null,
     combatCheckItems: [],
     slayerCheckItems: [],
     isFirst: true,
@@ -46,6 +48,11 @@ export default function XCombat (props) {
       } else {
         if (this.modeType === 'one' && (this.combatCheckItems.length > 0 || this.slayerCheckItems.length > 0)) {
           return
+        }
+        if (this.modeType === 'one') {
+          this.checkItem = item
+        } else {
+          this.checkItem = null
         }
         this.combatCheckItems.push(item.name);
       }
@@ -82,6 +89,11 @@ export default function XCombat (props) {
         if (this.modeType === 'one' && (this.combatCheckItems.length > 0 || this.slayerCheckItems.length > 0)) {
           return
         }
+        if (this.modeType === 'one') {
+          this.checkItem = item
+        } else {
+          this.checkItem = null
+        }
         this.slayerCheckItems.push(item.name);
       }
     },
@@ -108,7 +120,7 @@ export default function XCombat (props) {
       }
     },
     renderTask (monster, tier, killsLeft) {
-      if (game.combat.slayerTask.monster.name !== this.combatCheckItems[0]) {
+      if (game.combat.slayerTask.monster.name !== this.checkItem.name) {
         game.combat.slayerTask.monster = monster;
         game.combat.slayerTask.tier = tier;
         game.combat.slayerTask.killsLeft = killsLeft;
@@ -135,8 +147,8 @@ export default function XCombat (props) {
     },
     start () {
       if (this.combatCheckItems.length > 0 || this.slayerCheckItems.length > 0) {
-        if (this.modeType === 'one' && this.combatCheckItems.length > 0) {
-          const targetMonsterId = game.monsters.getObjectByID(this.combatAreaObj[this.combatCheckItems[0]].id)
+        if (this.modeType === 'one') {
+          const targetMonsterId = game.monsters.getObjectByID(this.checkItem.key)
           game.combat.selectMonster(targetMonsterId, game.getMonsterArea(targetMonsterId))
           this.renderTask(targetMonsterId, 0, 100);
         } else if (this.modeType === 'skip') {
@@ -147,6 +159,7 @@ export default function XCombat (props) {
         if (this.isFirst) {
           this.ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
             if (this.modeType === 'one') {
+              const targetMonsterId = game.monsters.getObjectByID(this.checkItem.key)
               this.renderTask(targetMonsterId, 0, 100);
             }
           });
