@@ -25,6 +25,7 @@
 - English
 
 # Bug Report
+[issues](https://github.com/rsl140/Melvoridle-Auto-Manger/issues)
 
 # TODO
 

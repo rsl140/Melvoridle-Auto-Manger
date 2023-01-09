@@ -1,4 +1,4 @@
-# Features
+# 功能
 
 <span style="color: red;">提示: 目前暂不支持离线.</span>
 
@@ -18,12 +18,13 @@
   - 添加物品
 
 
-# Language Support
+# 语言支持
 
 - 中文
 - 英文
 
-# Bug Report
+# Bug反馈
+[issues](https://github.com/rsl140/Melvoridle-Auto-Manger/issues)
 
 # TODO
 
