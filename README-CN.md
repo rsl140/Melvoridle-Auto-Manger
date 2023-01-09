@@ -25,8 +25,3 @@
 
 # Bug反馈
 [issues](https://github.com/rsl140/Melvoridle-Auto-Manger/issues)
-
-# TODO
-
-- [ ] 自动装备
-- [ ] 仓库整理，分类
