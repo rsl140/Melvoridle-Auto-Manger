@@ -28,7 +28,7 @@ export function xAutoLootButton (ctx, lang) {
       `
   $('#combat-loot').prepend(div);
 
-  $("#x-auto-loot").on("change",function(){
+  $("#x-auto-loot").on("change", function () {
     ctx.characterStorage.setItem('x-auto-loot', this.checked);
   });
 
@@ -60,7 +60,7 @@ export function xAttackStyles (ctx, lang) {
       `
   $('#combat-slayer-task-menu').next().append(div);
 
-  $("#x-attack-styles").on("change",function(){
+  $("#x-attack-styles").on("change", function () {
     ctx.characterStorage.setItem('x-attack-styles', this.checked);
   });
 

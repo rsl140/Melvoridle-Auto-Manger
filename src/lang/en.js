@@ -25,6 +25,10 @@ const en = {
   },
   "button": {
     "slayerSetting": "Slayer Setting"
+  },
+  "tips": {
+    "noSelect1": "Execution method not selected",
+    "noSelect2": "No execution target selected"
   }
 }
 

@@ -25,6 +25,10 @@ const zh = {
   },
   "button": {
     "slayerSetting": "屠杀者任务设置"
+  },
+  "tips": {
+    "noSelect1": "未选择执行方式",
+    "noSelect2": "未选择执行目标"
   }
 }
 
