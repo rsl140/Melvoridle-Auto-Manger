@@ -4,6 +4,7 @@ import Dialog from './Dialog/index.mjs'
 import BankItems from './BankItems/index.mjs'
 import XCombat from './Combat/index.mjs'
 import * as XButtons from './Button/index.mjs'
+import * as Drop from './Drop/index.mjs'
 
 // js
 import lang from '../lang/index.js'
@@ -82,6 +83,9 @@ export async function setup(ctx) {
       XButtons.xSlayerButton({ ctx, dialog: combatDialog, lang: currentLang }),
       $('#combat-slayer-task-menu').children()[0]
     )
+
+    // Drop
+    Drop.drop(ctx)
 
     // Auto Buttons
     XButtons.xAutoLootButton(ctx, currentLang)
