@@ -3,6 +3,7 @@
 
 <span style="color: red;">Tips: Offline is not supported at this time.</span>
 
+- Show Dungeons Pet Undiscovered Status
 - Show Drop Changes & Undiscovered Status & Bank Qty
 - Auto Attack Styles [Stab, Slash, Block]
 - Auto Loot All

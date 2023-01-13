@@ -11,7 +11,7 @@ import lang from '../lang/index.js'
 
 // Data
 // Game data for registration
-import ModData from '../data/data.json'
+// import ModData from '../data/data.json'
 
 // Styles
 // Will automatically load your styles upon loading the mod
@@ -27,11 +27,15 @@ import LargeSidebarIcon from '../img/icon_large.png'
 /**
  * @param {ModContext} ctx
  */
-export async function setup(ctx) {
-  await ctx.gameData.addPackage(ModData)
+export async function setup (ctx) {
+  // await ctx.gameData.addPackage(ModData)
   // ctx.onModsLoaded(() => {
   //   console.warn('Hello From My Mod!');
   // });
+
+  ctx.onModsLoaded(async (ctx) => {
+    Drop.dropPetHtml(ctx);
+  });
 
   ctx.onInterfaceReady(async () => {
     // setting lang
@@ -57,7 +61,7 @@ export async function setup(ctx) {
       .category('X Auto Manger', { toggleable: true, after: 'Modding' })
       .item(currentLang.cheating.name, {
         icon: ctx.getResourceUrl(LargeSidebarIcon),
-        onClick() {
+        onClick () {
           dialog.open()
         }
       })
@@ -86,6 +90,8 @@ export async function setup(ctx) {
 
     // Drop
     Drop.drop(ctx)
+    // pet
+    Drop.dropPetInterfaceHtml()
 
     // Auto Buttons
     XButtons.xAutoLootButton(ctx, currentLang)

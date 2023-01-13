@@ -32,7 +32,7 @@ export function drop (ctx) {
   });
 
   // items
-  function viewItemContents(item) {
+  function viewItemContents (item) {
     const dropsOrdered = item.dropTable.sortedDropsArray;
     const drops = dropsOrdered.map((drop) => {
       let dropText = templateString(getLangString('BANK_STRING', '40'), {
@@ -58,4 +58,68 @@ export function drop (ctx) {
     });
   }
   window.viewItemContents = viewItemContents
+}
+
+
+export function dropPetHtml (ctx) {
+  ctx.patch(CombatAreaMenu, "createName").replace(function (o, areaData) {
+    let name = o(areaData);
+    if (areaData.pet) {
+      const pet = areaData.pet.pet
+      const requirements = createElement('div', {
+        classList: ['font-size-sm']
+      });
+      requirements.innerHTML = `
+        <small id="x-manger-${pet.id}">
+          ${getLangString('PAGE_NAME', 'CompletionLog_SUBCATEGORY_4')}：
+          <img class="skill-icon-xs mr-1 ml-2" src="${pet.media}">
+        </small>
+      `
+      name.appendChild(requirements)
+    }
+    return name;
+  });
+
+
+  ctx.patch(PetManager, "unlockPet").replace(function (o, pet) {
+    const petDiv = document.getElementById(`x-manger-${pet.id}`)
+    if (petDiv) {
+      if (petDiv.lastChild.tagName === 'I') {
+        petDiv.removeChild(petDiv.lastChild)
+        const iDiv = createElement('i', {
+          classList: ['text-success', 'fa', 'fa-check-circle']
+        });
+        petDiv.appendChild(iDiv);
+      }
+    }
+    return o(pet)
+  })
+}
+
+export function dropPetInterfaceHtml () {
+  function renderPet (area) {
+    area.map(({ pet }) => {
+      if (pet) {
+        const petDiv = document.getElementById(`x-manger-${pet.pet.id}`)
+        if (petDiv) {
+          if (game.petManager.isPetUnlocked(game.pets.getObjectByID(pet.pet.id))) {
+            const iDiv = createElement('i', {
+              classList: ['text-success', 'fa', 'fa-check-circle']
+            });
+            petDiv.appendChild(iDiv);
+          } else {
+            const iDiv = createElement('i', {
+              classList: ['fa', 'fa-fw', 'fa-times']
+            });
+            iDiv.style = 'color: #e56767;'
+            petDiv.appendChild(iDiv);
+          }
+        }
+      }
+    })
+  }
+
+  renderPet(game.combatAreaDisplayOrder)
+  renderPet(game.slayerAreaDisplayOrder)
+  renderPet(game.dungeonDisplayOrder)
 }
