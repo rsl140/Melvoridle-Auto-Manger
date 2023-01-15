@@ -29,12 +29,10 @@ import LargeSidebarIcon from '../img/icon_large.png'
  */
 export async function setup (ctx) {
   // await ctx.gameData.addPackage(ModData)
-  // ctx.onModsLoaded(() => {
-  //   console.warn('Hello From My Mod!');
-  // });
 
   ctx.onModsLoaded(async (ctx) => {
     Drop.dropPetHtml(ctx);
+    // Drop.dropFishSellforHtml(ctx);
   });
 
   ctx.onInterfaceReady(async () => {
@@ -88,9 +86,9 @@ export async function setup (ctx) {
       $('#combat-slayer-task-menu').children()[0]
     )
 
-    // Drop
+    // MonsterDrop
     Drop.drop(ctx)
-    // pet
+    // Pet
     Drop.dropPetInterfaceHtml()
 
     // Auto Buttons
