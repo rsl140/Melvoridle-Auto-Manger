@@ -73,6 +73,7 @@ function dropThievingHtml (ctx) {
     const found = game.stats.itemFindCount(item);
     if (found) {
       html += `
+        (${(100 / 500).toFixed(2)}%)
         ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
         <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
         <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
