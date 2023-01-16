@@ -180,7 +180,7 @@ export default function XCombat (props) {
         setTimeout(() => {
           this.skipMonster();
         }, 0);
-      } else if (this.modeType === 'one'){
+      } else if (this.modeType === 'one') {
         if (this.combatCheckItems.length > 0 || this.slayerCheckItems.length > 0) {
           const targetMonsterId = game.monsters.getObjectByID(this.checkItem.key)
           game.combat.selectMonster(targetMonsterId, game.getMonsterArea(targetMonsterId))

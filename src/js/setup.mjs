@@ -42,6 +42,17 @@ export async function setup (ctx) {
       currentLang = lang['en']
     }
 
+    // mod setting
+    const settingId = 'x-setting'
+    const setting = Dialog({
+      modalShow: false,
+      modalID: `modal-${settingId}`,
+      modalTitle: currentLang.setting.name,
+      modalContent: `<div id="${settingId}"></div>`
+    })
+    ui.create(setting, document.getElementById('page-container'))
+    Drop.dropSetting(ctx, setting, settingId, currentLang)
+
     // cheat
     const dialog = Dialog({
       modalShow: false,
@@ -61,6 +72,14 @@ export async function setup (ctx) {
         icon: ctx.getResourceUrl(LargeSidebarIcon),
         onClick () {
           dialog.open()
+        }
+      })
+    sidebar
+      .category('X Auto Manger')
+      .item(currentLang.setting.name, {
+        icon: ctx.getResourceUrl(LargeSidebarIcon),
+        onClick () {
+          setting.open()
         }
       })
 

@@ -1,4 +1,11 @@
 const en = {
+  "setting": {
+    "name": 'Setting',
+    "Drop": "Drop Changes Setting",
+    "GP": "Show GP",
+    "qty": "Show Bank Qty",
+    "lock": "Show Undiscovered Status"
+  },
   "cheating": {
     "name": "Game Cheats",
     "tips": "Tips: It is not recommended to use cheats, which will affect the playability of the game!!!",

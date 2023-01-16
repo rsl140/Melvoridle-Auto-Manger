@@ -1,6 +1,7 @@
 node_modules
 packed
 package-lock.json
+.vscode
 
 # Numerous always-ignore extensions
 *.bak

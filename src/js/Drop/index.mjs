@@ -1,3 +1,61 @@
+function dropSetting (ctx, dialog, settingDomId, lang) {
+  const settingStorage = ctx.characterStorage.getItem(`x-${settingDomId}`)
+  let checkObj = {
+    gp: true,
+    qty: true,
+    lock: true,
+  }
+  if (!settingStorage) {
+    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+  } else {
+    checkObj = settingStorage
+  }
+  window.settingStorage = checkObj
+  const div = document.createElement('div')
+  div.className = 'x-bank-items-box'
+  div.innerHTML = `
+    <div class="col-12">
+      <h4 class="mb-2" style="min-width: 40vw;">${lang.setting.Drop}</h4>
+      <div class="row row-deck">
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="x-drop-gp" ${checkObj && checkObj.gp ? 'checked' : ''}>
+            <label class="custom-control-label" for="x-drop-gp">${lang.setting.GP}</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="x-drop-qty" ${checkObj && checkObj.qty ? 'checked' : ''}>
+            <label class="custom-control-label" for="x-drop-qty">${lang.setting.qty}</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="x-drop-lock" ${checkObj && checkObj.lock ? 'checked' : ''}>
+            <label class="custom-control-label" for="x-drop-lock">${lang.setting.lock}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+  $(`#${settingDomId}`).append(div)
+  $("#x-drop-gp").on("change", function () {
+    checkObj.gp = this.checked
+    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    window.settingStorage = checkObj
+  });
+  $("#x-drop-qty").on("change", function () {
+    checkObj.qty = this.checked
+    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    window.settingStorage = checkObj
+  });
+  $("#x-drop-lock").on("change", function () {
+    checkObj.lock = this.checked
+    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    window.settingStorage = checkObj
+  });
+}
+
 function drop (ctx) {
   dropMonsterHtml(ctx)
   dropThievingHtml(ctx)
@@ -7,6 +65,7 @@ function drop (ctx) {
 // monster
 function dropMonsterHtml (ctx) {
   ctx.patch(CombatManager, 'getMonsterDropsHTML').replace(function (o, monster, respectArea) {
+    const settingStorage = window.settingStorage
     let drops = ''
     if (monster.lootChance > 0 && monster.lootTable.size > 0 && !(respectArea && this.areaType === CombatAreaType.Dungeon)) {
       drops = monster.lootTable.sortedDropsArray.map((drop) => {
@@ -15,11 +74,27 @@ function dropMonsterHtml (ctx) {
           itemImage: `<img class="skill-icon-xs mr-2" src="${drop.item.media}">`,
           itemName: drop.item.name
         })
-        dropText += ` (${((monster.lootChance * drop.weight) / monster.lootTable.weight).toFixed(2)}%)
+        dropText += ` (${((monster.lootChance * drop.weight) / monster.lootTable.weight).toFixed(2)}%)`
+        if (settingStorage.lock) {
+          dropText += `
           ${game.stats.Items.get(drop.item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
-          <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
+          `
+        }
+        if (settingStorage.gp) {
+          dropText += `
+            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
+          `
+        }
+        if (settingStorage.qty) {
+          dropText += `
           <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(drop.item)}
-        `
+          `
+        }
+        // dropText += ` (${((monster.lootChance * drop.weight) / monster.lootTable.weight).toFixed(2)}%)
+        //   ${game.stats.Items.get(drop.item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+        //   <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
+        //   <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(drop.item)}
+        // `
         return dropText
       }
       ).join('<br>')
@@ -41,6 +116,7 @@ function dropMonsterHtml (ctx) {
 
 // items
 function viewItemContents (item) {
+  const settingStorage = window.settingStorage
   const dropsOrdered = item.dropTable.sortedDropsArray;
   const drops = dropsOrdered.map((drop) => {
     let dropText = templateString(getLangString('BANK_STRING', '40'), {
@@ -48,11 +124,27 @@ function viewItemContents (item) {
       itemImage: `<img class="skill-icon-xs mr-2" src="${drop.item.media}">`,
       itemName: drop.item.name,
     });
-    dropText += ` (${((100 * drop.weight) / item.dropTable.totalWeight).toFixed(2)}%)
-        ${game.stats.Items.get(drop.item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
-        <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
-        <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(drop.item)}
-        `
+    dropText += ` (${((100 * drop.weight) / item.dropTable.totalWeight).toFixed(2)}%)`
+    if (settingStorage.lock) {
+      dropText += `
+          ${game.stats.Items.get(drop.item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+          `
+    }
+    if (settingStorage.gp) {
+      dropText += `
+            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
+          `
+    }
+    if (settingStorage.qty) {
+      dropText += `
+          <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(drop.item)}
+          `
+    }
+    // dropText += ` (${((100 * drop.weight) / item.dropTable.totalWeight).toFixed(2)}%)
+    //     ${game.stats.Items.get(drop.item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+    //     <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${drop.item.sellsFor}
+    //     <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(drop.item)}
+    //     `
     return dropText
   }
   ).join('<br>');
@@ -69,19 +161,37 @@ function viewItemContents (item) {
 // thieving
 function dropThievingHtml (ctx) {
   ctx.patch(ThievingMenu, 'formatSpecialDrop').replace(function (o, item, qty) {
+    const settingStorage = window.settingStorage
     let html = o(item, qty)
     const found = game.stats.itemFindCount(item);
     if (found) {
-      html += `
-        (${(100 / 500).toFixed(2)}%)
-        ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
-        <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
-        <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
-      `
+      html += ` (${(100 / 500).toFixed(2)}%)`
+      if (settingStorage.lock) {
+        html += `
+            ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+          `
+      }
+      if (settingStorage.gp) {
+        html += `
+            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+          `
+      }
+      if (settingStorage.qty) {
+        html += `
+            <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+          `
+      }
+      // html += `
+      //   (${(100 / 500).toFixed(2)}%)
+      //   ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+      //   <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+      //   <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+      // `
     }
     return html
   })
   ctx.patch(ThievingMenu, 'showNPCDrops').replace(function (o, npc, area) {
+    const settingStorage = window.settingStorage
     const sortedTable = npc.lootTable.sortedDropsArray;
     const { minGP, maxGP } = game.thieving.getNPCGPRange(npc);
     let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT', 'GP_AMOUNT', {
@@ -93,12 +203,28 @@ function dropThievingHtml (ctx) {
       const totalWeight = npc.lootTable.weight;
       html += sortedTable.map(({ item, weight, minQuantity, maxQuantity }) => {
         let text = `${maxQuantity > minQuantity ? `${minQuantity}-` : ''}${maxQuantity} x <img class="skill-icon-xs mr-2" src="${item.media}">${item.name}`;
-        text += `
-          (${((100 * weight) / totalWeight).toFixed(2)}%)
-          ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
-          <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
-          <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
-        `;
+        text += ` (${((100 * weight) / totalWeight).toFixed(2)}%)`
+        if (settingStorage.lock) {
+          text += `
+            ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+          `
+        }
+        if (settingStorage.gp) {
+          text += `
+            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+          `
+        }
+        if (settingStorage.qty) {
+          text += `
+            <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+          `
+        }
+        // text += `
+        //   (${((100 * weight) / totalWeight).toFixed(2)}%)
+        //   ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+        //   <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+        //   <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+        // `
         return text;
       }
       ).join('<br>');
@@ -215,6 +341,7 @@ function dropFishSellforHtml (ctx) {
 
 export {
   drop,
+  dropSetting,
   dropPetHtml,
   dropPetInterfaceHtml,
   dropFishSellforHtml
