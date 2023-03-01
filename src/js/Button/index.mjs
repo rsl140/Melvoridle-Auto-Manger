@@ -84,3 +84,21 @@ export function xAttackStyles (ctx, lang) {
     }
   });
 }
+
+
+export function xAutoFarmingButton (ctx, lang) {
+  if ($('#x-auto-farming').length !== 0) {
+    return
+  }
+  const btn = document.createElement('button')
+  btn.className = "btn btn-sm btn-alt-success m-1"
+  btn.id = 'x-auto-farming'
+  btn.textContent = lang.button.farming
+  btn.addEventListener("click", () => {
+    game.farming.categories.allObjects.map(val => {
+      game.farming.harvestAllOnClick(val)
+      game.farming.plantAllSelectedOnClick(val)
+    })
+  })
+  $('#farming-category-options').prepend(btn);
+}

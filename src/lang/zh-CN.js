@@ -31,7 +31,8 @@ const zh = {
     "autoAttackStyles": '自动切换'
   },
   "button": {
-    "slayerSetting": "屠杀者任务设置"
+    "slayerSetting": "屠杀者任务设置",
+    "farming": '一键种植'
   },
   "tips": {
     "noSelect1": "未选择执行方式",

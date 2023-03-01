@@ -114,5 +114,8 @@ export async function setup (ctx) {
     XButtons.xAutoLootButton(ctx, currentLang)
     XButtons.xAttackStyles(ctx, currentLang)
 
+    // Farming
+    XButtons.xAutoFarmingButton(ctx, currentLang)
+
   })
 }

@@ -31,7 +31,8 @@ const en = {
     "autoAttackStyles": 'Auto Attack Styles'
   },
   "button": {
-    "slayerSetting": "Slayer Setting"
+    "slayerSetting": "Slayer Setting",
+    "farming": 'Auto Farming'
   },
   "tips": {
     "noSelect1": "Execution method not selected",
