@@ -69,7 +69,7 @@ function dropMonsterHtml (ctx) {
     let drops = ''
     if (monster.lootChance > 0 && monster.lootTable.size > 0 && !(respectArea && this.areaType === CombatAreaType.Dungeon)) {
       drops = monster.lootTable.sortedDropsArray.map((drop) => {
-        let dropText = templateLangString('BANK_STRING', '40', {
+        let dropText = templateLangString('BANK_STRING_40', {
           qty: `${drop.maxQuantity}`,
           itemImage: `<img class="skill-icon-xs mr-2" src="${drop.item.media}">`,
           itemName: drop.item.name
@@ -96,13 +96,13 @@ function dropMonsterHtml (ctx) {
     }
     let bones = ''
     if (monster.bones !== undefined && !(respectArea && this.selectedArea instanceof Dungeon && !this.selectedArea.dropBones)) {
-      bones = `${getLangString('MISC_STRING', '7')}<br><small><img class="skill-icon-xs mr-2" src="${monster.bones.item.media}">${monster.bones.item.name}</small><br><br>`
+      bones = `${getLangString('MISC_STRING_7')}<br><small><img class="skill-icon-xs mr-2" src="${monster.bones.item.media}">${monster.bones.item.name}</small><br><br>`
     } else {
-      bones = getLangString('COMBAT_MISC', '107') + '<br><br>'
+      bones = getLangString('COMBAT_MISC_107') + '<br><br>'
     }
     let html = `<span class="text-dark">${bones}<br>`
     if (drops !== '') {
-      html += `${getLangString('MISC_STRING', '8')}<br><small>${getLangString('MISC_STRING', '9')}</small><br>${drops}`
+      html += `${getLangString('MISC_STRING_8')}<br><small>${getLangString('MISC_STRING_9')}</small><br>${drops}`
     }
     html += '</span>'
     return html
@@ -114,7 +114,7 @@ function viewItemContents (item) {
   const settingStorage = window.settingStorage
   const dropsOrdered = item.dropTable.sortedDropsArray;
   const drops = dropsOrdered.map((drop) => {
-    let dropText = templateString(getLangString('BANK_STRING', '40'), {
+    let dropText = templateString(getLangString('BANK_STRING_40'), {
       qty: `${numberWithCommas(drop.maxQuantity)}`,
       itemImage: `<img class="skill-icon-xs mr-2" src="${drop.item.media}">`,
       itemName: drop.item.name,
@@ -140,7 +140,7 @@ function viewItemContents (item) {
   ).join('<br>');
   SwalLocale.fire({
     title: item.name,
-    html: getLangString('BANK_STRING', '39') + '<br><small>' + drops,
+    html: getLangString('BANK_STRING_39') + '<br><small>' + drops,
     imageUrl: item.media,
     imageWidth: 64,
     imageHeight: 64,
@@ -181,9 +181,9 @@ function dropThievingHtml (ctx) {
     let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT', 'GP_AMOUNT', {
       gp: `${formatNumber(minGP)}-${formatNumber(maxGP)}`,
     })}</small><br>`;
-    html += `${getLangString('THIEVING', 'POSSIBLE_COMMON')}<br><small>`;
+    html += `${getLangString('THIEVING_POSSIBLE_COMMON')}<br><small>`;
     if (sortedTable.length) {
-      html += `${getLangString('THIEVING', 'MOST_TO_LEAST_COMMON')}<br>`;
+      html += `${getLangString('THIEVING_MOST_TO_LEAST_COMMON')}<br>`;
       const totalWeight = npc.lootTable.weight;
       html += sortedTable.map(({ item, weight, minQuantity, maxQuantity }) => {
         let text = `${maxQuantity > minQuantity ? `${minQuantity}-` : ''}${maxQuantity} x <img class="skill-icon-xs mr-2" src="${item.media}">${item.name}`;
@@ -209,10 +209,10 @@ function dropThievingHtml (ctx) {
       if (DEBUGENABLED)
         html += `<br>Average Value: ${npc.lootTable.averageDropValue.toFixed(2)} GP`;
     } else {
-      html += getLangString('THIEVING', 'NO_COMMON_DROPS');
+      html += getLangString('THIEVING_NO_COMMON_DROPS');
     }
     html += `</small><br>`;
-    html += `${getLangString('THIEVING', 'POSSIBLE_RARE')}<br><small>`;
+    html += `${getLangString('THIEVING_POSSIBLE_RARE')}<br><small>`;
     const generalRareHTML = [];
     game.thieving.generalRareItems.forEach(({ item, npcs }) => {
       if (npcs === undefined || npcs.has(npc))
@@ -222,12 +222,12 @@ function dropThievingHtml (ctx) {
     html += generalRareHTML.join('<br>');
     html += `</small><br>`;
     if (area.uniqueDrops.length) {
-      html += `${getLangString('THIEVING', 'POSSIBLE_AREA_UNIQUE')}<br><small>`;
+      html += `${getLangString('THIEVING_POSSIBLE_AREA_UNIQUE')}<br><small>`;
       html += area.uniqueDrops.map((drop) => this.formatSpecialDrop(drop.item, drop.quantity)).join('<br>');
       html += '</small><br>';
     }
     if (npc.uniqueDrop !== undefined) {
-      html += `${getLangString('THIEVING', 'POSSIBLE_NPC_UNIQUE')}<br><small>${this.formatSpecialDrop(npc.uniqueDrop.item, npc.uniqueDrop.quantity)}</small>`;
+      html += `${getLangString('THIEVING_POSSIBLE_NPC_UNIQUE')}<br><small>${this.formatSpecialDrop(npc.uniqueDrop.item, npc.uniqueDrop.quantity)}</small>`;
     }
     html += '</span>';
     SwalLocale.fire({
@@ -252,7 +252,7 @@ function dropPetHtml (ctx) {
       });
       requirements.innerHTML = `
         <small id="x-manger-${pet.id}">
-          ${getLangString('PAGE_NAME', 'CompletionLog_SUBCATEGORY_4')}：
+          ${getLangString('PAGE_NAME_CompletionLog_SUBCATEGORY_4')}：
           <img class="skill-icon-xs mr-1 ml-2" src="${pet.media}">
           (${(100 / areaData.pet.weight).toFixed(2)}%)
         </small>
