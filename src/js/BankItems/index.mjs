@@ -120,12 +120,18 @@ export default function BankItems (props) {
       }
     },
     setSpeed () {
-      if (this.speed && this.speed > 0) {
-        this.ctx.patch(Skill, 'addXP').replace((o, amount, masteryAction) => {
-          return o(amount * this.speed, masteryAction);
+      if (this.speed && +this.speed > 0) {
+        this.ctx.patch(Skill, 'addXP').replace(function (o, amount, masteryAction) {
+          const speed = $(`#x-set-speed`).val();
+          if (speed && +speed > 0) {
+            return o(amount * +speed, masteryAction);
+          } else {
+            return o(amount, masteryAction);
+          }
         });
-        this.speed = '';
         fireBottomToast('success');
+      } else {
+        fireBottomToast('change');
       }
     }
   };
