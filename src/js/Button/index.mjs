@@ -64,6 +64,14 @@ export function xAutoLootButton (ctx, lang) {
       const autoLootAll = $('#x-auto-loot')[0].checked;
       if (autoLootAll) {
         const drops = game.combat.loot.drops;
+        if (game.combat.loot.lostLoot.size > 0) {
+          game.combat.loot.lostLoot.forEach(function (value, key) {
+            drops.push({
+              item: key,
+              quantity: value
+            })
+          })
+        }
         const count = drops.length;
         if (count > 0) {
           game.combat.loot.lootAll();
