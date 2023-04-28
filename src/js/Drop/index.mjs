@@ -4,6 +4,7 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
     gp: true,
     qty: true,
     lock: true,
+    inSidebar: false
   }
   if (!settingStorage) {
     ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
@@ -36,6 +37,15 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
           </div>
         </div>
       </div>
+      <h4 class="mb-2" style="min-width: 40vw;">${lang.setting.Btn}</h4>
+      <div class="row row-deck">
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="x-btn-in-sidebar" ${checkObj && checkObj.inSidebar ? 'checked' : ''}>
+            <label class="custom-control-label" for="x-btn-in-sidebar">${lang.setting.inSidebar}</label>
+          </div>
+        </div>
+      </div>
     </div>
   `
   $(`#${settingDomId}`).append(div)
@@ -51,6 +61,11 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
   });
   $("#x-drop-lock").on("change", function () {
     checkObj.lock = this.checked
+    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    window.settingStorage = checkObj
+  });
+  $("#x-btn-in-sidebar").on("change", function () {
+    checkObj.inSidebar = this.checked
     ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
     window.settingStorage = checkObj
   });

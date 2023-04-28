@@ -53,6 +53,17 @@ export async function setup (ctx) {
     ui.create(setting, document.getElementById('page-container'))
     Drop.dropSetting(ctx, setting, settingId, currentLang)
 
+    // all function btn
+    const functionId = 'x-function'
+    const XFunction = Dialog({
+      modalShow: false,
+      modalID: `modal-${functionId}`,
+      modalTitle: currentLang.function.name,
+      modalContent: `<div id="${functionId}"></div>`
+    })
+    ui.create(XFunction, document.getElementById('page-container'))
+    XButtons.xSidebarFunction(functionId)
+
     // cheat
     const dialog = Dialog({
       modalShow: false,
@@ -82,6 +93,14 @@ export async function setup (ctx) {
           setting.open()
         }
       })
+    sidebar
+      .category('X Auto Manger')
+      .item(currentLang.function.name, {
+        icon: ctx.getResourceUrl(LargeSidebarIcon),
+        onClick () {
+          XFunction.open()
+        }
+      })
 
     // combat
     const combatDialog = Dialog({
@@ -100,10 +119,18 @@ export async function setup (ctx) {
       }),
       document.getElementById('x-combat-dialog')
     )
-    ui.create(
-      XButtons.xSlayerButton({ ctx, dialog: combatDialog, lang: currentLang }),
-      $('#combat-slayer-task-menu').children()[0]
-    )
+    if (!window.settingStorage.inSidebar) {
+      ui.create(
+        XButtons.xSlayerButton({ ctx, dialog: combatDialog, lang: currentLang, func: null }),
+        $('#combat-slayer-task-menu').children()[0]
+      )
+    } else {
+      ui.create(
+        XButtons.xSlayerButton({ ctx, dialog: combatDialog, lang: currentLang, func: XFunction }),
+        document.getElementById('x-slayer-btn-box')
+      )
+    }
+
 
     // MonsterDrop
     Drop.drop(ctx)

@@ -1,10 +1,15 @@
 const zh = {
+  "function": {
+    "name": '功能'
+  },
   "setting": {
     "name": '设置',
     "Drop": "掉落显示",
     "GP": "显示金币",
     "qty": "显示仓库持有数",
-    "lock": "显示解锁状态"
+    "lock": "显示解锁状态",
+    "Btn": "按钮",
+    "inSidebar": '侧边栏显示功能按钮(需要重新载入)'
   },
   "cheating": {
     "name": "游戏作弊器",
@@ -28,7 +33,7 @@ const zh = {
     "cancelAll": "取消所有",
     "start": "开始",
     "autoLootAll": "自动拾取",
-    "autoAttackStyles": '自动切换'
+    "autoAttackStyles": '自动切换战斗风格'
   },
   "button": {
     "slayerSetting": "屠杀者任务设置",

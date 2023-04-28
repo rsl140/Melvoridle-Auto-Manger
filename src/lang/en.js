@@ -1,10 +1,15 @@
 const en = {
+  "function": {
+    "name": 'Function'
+  },
   "setting": {
     "name": 'Setting',
     "Drop": "Drop Changes Setting",
     "GP": "Show GP",
     "qty": "Show Bank Qty",
-    "lock": "Show Undiscovered Status"
+    "lock": "Show Undiscovered Status",
+    "Btn": "Button",
+    "inSidebar": 'All X Auto Manger Functtion In Sidebar（need reload）'
   },
   "cheating": {
     "name": "Game Cheats",
