@@ -93,14 +93,16 @@ export async function setup (ctx) {
           setting.open()
         }
       })
-    sidebar
-      .category('X Auto Manger')
-      .item(currentLang.function.name, {
-        icon: ctx.getResourceUrl(LargeSidebarIcon),
-        onClick () {
-          XFunction.open()
-        }
-      })
+    if (window.settingStorage.inSidebar) {
+      sidebar
+        .category('X Auto Manger')
+        .item(currentLang.function.name, {
+          icon: ctx.getResourceUrl(LargeSidebarIcon),
+          onClick () {
+            XFunction.open()
+          }
+        })
+    }
 
     // combat
     const combatDialog = Dialog({
