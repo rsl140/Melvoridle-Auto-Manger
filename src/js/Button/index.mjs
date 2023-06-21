@@ -150,3 +150,136 @@ export function xAutoFarmingButton (ctx, lang) {
     $('#x-auto-farming-box').append(btn)
   }
 }
+
+
+
+// 装备类[6]，使用类[7]，食物类[8]，材料类[9]，合成类[10]，杂物类[11]
+function fliterItem () {
+  return {
+    // 装备，武器 [6]
+    equipArr: {
+      tabId: 6,
+      value: ['EquipmentItem', 'WeaponItem']
+    },
+    // 骨头，代币，宝箱 [7]
+    useArr: {
+      tabId: 7,
+      value: ['BoneItem', 'TokenItem', 'OpenableItem']
+    },
+    // 药水，食物 [8]
+    etaArr: {
+      tabId: 8,
+      value: ['PotionItem', 'FoodItem']
+    },
+    // 肥料 [9]
+    materialArr: {
+      tabId: 9,
+      value: ['CompostItem']
+    },
+    // [10]
+    synthesisArr: {
+      tabId: 10,
+      value: []
+    },
+    // 书 [11]
+    otherArr: {
+      tabId: 11,
+      value: ['ReadableItem']
+    },
+  }
+}
+
+// 装备类[6]，使用类[7]，食物类[8]，材料类[9]，合成类[10]，杂物类[11]
+function fliterItemType () {
+  return {
+    equipArr: {
+      tabId: 6,
+      value: ['Amulet']
+    },
+    useArr: {
+      tabId: 7,
+      value: ['Shard']
+    },
+    etaArr: {
+      tabId: 8,
+      value: ['Raw Fish']
+    },
+    materialArr: {
+      tabId: 9,
+      value: ['Logs', 'Bar', 'Crafting Material', 'Dragonhide', 'Cooked Fish', 'Essence', 'Gem', 'General', 'Herb', 'Ingredient', 'Ore', 'Rune', 'Seeds', 'Superior Gem', 'Urn', 'Leather']
+    },
+    synthesisArr: {
+      tabId: 10,
+      value: ['Arrows', 'Arrowtips', 'Bows', 'Crossbow', 'Fragment', 'Item', 'Javelin', 'Material', 'Misc', 'Unstrung Bows']
+    },
+    otherArr: {
+      tabId: 11,
+      value: ['Christmas', 'Christmas 2021', 'Easter', 'Fish', 'Junk', 'Lemon', 'Lime', 'Miscellaneous', 'Resource', 'TODO', 'Secret']
+    }
+  }
+}
+
+function mapBankItems (arr, type, tabId, byTabId) {
+  game.bank.itemsByTab[byTabId].forEach(x => {
+    if (type === 'constructor') {
+      if (arr.includes(Object.getPrototypeOf(x.item).constructor.name)) {
+        game.bank.toggleItemSelected(x)
+      }
+    } else if (type === 'type') {
+      if (arr.includes(x.item.type)) {
+        game.bank.toggleItemSelected(x)
+      }
+    }
+  })
+  game.bank.itemSelectionMode = 1
+  game.bank.moveSelectedItemsToTab(tabId)
+}
+
+export function xAutoResetBankTab (ctx, lang) {
+  if ($('#x-auto-reset-bank-tab').length !== 0) {
+    return
+  }
+  const btn = document.createElement('button')
+  btn.className = "btn btn-sm btn-alt-info m-1"
+  btn.id = 'x-auto-reset-bank-tab'
+  btn.textContent = lang.button.resetBankTab
+  btn.addEventListener("click", () => {
+    for (let item of game.bank.defaultItemTabs.entries()) {
+      game.bank.defaultItemTabs.set(item[0], 0)
+    }
+
+    // init to tab 0
+    for (let i = 1; i < game.bank.maxTabs; i++) {
+      game.bank.itemSelectionMode = 1
+      game.bank.itemsByTab[i].forEach(x => {
+        game.bank.toggleItemSelected(x)
+      })
+      game.bank.moveSelectedItemsToTab(0)
+    }
+
+
+    const constructorItem = Object.values(fliterItem())
+    const itemType = Object.values(fliterItemType())
+
+    constructorItem.forEach(val => {
+      if (val.value.length > 0) {
+        mapBankItems(val.value, 'constructor', val.tabId, 0)
+      }
+    })
+    itemType.forEach(val => {
+      if (val.value.length > 0) {
+        mapBankItems(val.value, 'type', val.tabId, 0)
+      }
+    })
+    game.bank.sortButtonOnClick()
+  })
+
+  $('#main-bank-options').children(0).children(0).children(0).children(0)[0].prepend(btn)
+  tippy('#x-auto-reset-bank-tab', {
+    content: "<div style='color: #e56767;font-size: 18px;'>" + lang.button.resetBankTabNote + "</div>",
+    placement: 'bottom',
+    allowHTML: true,
+    interactive: false,
+    animation: false,
+  });
+}

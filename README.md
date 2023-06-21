@@ -1,4 +1,5 @@
 [中文文档](./README-CN.md)
+
 # Features
 
 <span style="color: red;">Tips: Offline is not supported at this time.</span>
@@ -20,16 +21,16 @@
   - Add Mastery XP to Pool
   - Add Item
 
-
 # Language Support
 
 - Chinese
 - English
 
 # Bug Report
+
 [issues](https://github.com/rsl140/Melvoridle-Auto-Manger/issues)
 
 # TODO
 
 - [ ] Auto Equip Wepon
-- [ ] BankItem Sort
+- [x] BankItem Sort

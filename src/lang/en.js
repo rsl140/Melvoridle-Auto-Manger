@@ -37,7 +37,9 @@ const en = {
   },
   "button": {
     "slayerSetting": "Slayer Setting",
-    "farming": 'Auto Farming'
+    "farming": 'Auto Farming',
+    "resetBankTab": 'Category Items',
+    "resetBankTabNote": "Note: This operation will cause the existing classification to be reset, please proceed with caution!"
   },
   "tips": {
     "noSelect1": "Execution method not selected",

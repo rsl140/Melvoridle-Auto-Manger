@@ -146,5 +146,7 @@ export async function setup (ctx) {
     // Farming
     XButtons.xAutoFarmingButton(ctx, currentLang)
 
+    XButtons.xAutoResetBankTab(ctx, currentLang)
+
   })
 }

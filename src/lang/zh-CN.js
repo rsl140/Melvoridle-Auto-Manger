@@ -37,7 +37,9 @@ const zh = {
   },
   "button": {
     "slayerSetting": "屠杀者任务设置",
-    "farming": '一键种植'
+    "farming": '一键种植',
+    "resetBankTab": '归类物品',
+    "resetBankTabNote": "注意:该操作会导致现有分类重置，请谨慎操作!"
   },
   "tips": {
     "noSelect1": "未选择执行方式",
