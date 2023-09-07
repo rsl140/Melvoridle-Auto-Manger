@@ -8,6 +8,7 @@ const en = {
     "GP": "Show GP",
     "qty": "Show Bank Qty",
     "lock": "Show Undiscovered Status",
+    "sortBtn": "Show Category Items Button",
     "Btn": "Button",
     "inSidebar": 'All X Auto Manger Functtion In Sidebar（need reload）'
   },

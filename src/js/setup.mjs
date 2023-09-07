@@ -146,7 +146,9 @@ export async function setup (ctx) {
     // Farming
     XButtons.xAutoFarmingButton(ctx, currentLang)
 
-    XButtons.xAutoResetBankTab(ctx, currentLang)
+    if (window.settingStorage.sortBtn) {
+      XButtons.xAutoResetBankTab(ctx, currentLang)
+    }
 
   })
 }

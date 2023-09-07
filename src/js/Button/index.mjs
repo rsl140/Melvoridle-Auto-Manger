@@ -273,7 +273,6 @@ export function xAutoResetBankTab (ctx, lang) {
     })
     game.bank.sortButtonOnClick()
   })
-
   $('#main-bank-options').children(0).children(0).children(0).children(0)[0].prepend(btn)
   tippy('#x-auto-reset-bank-tab', {
     content: "<div style='color: #e56767;font-size: 18px;'>" + lang.button.resetBankTabNote + "</div>",
@@ -282,4 +281,8 @@ export function xAutoResetBankTab (ctx, lang) {
     interactive: false,
     animation: false,
   });
+
+  if (!window.settingStorage.sortBtn) {
+    $('#x-auto-reset-bank-tab').hide()
+  }
 }

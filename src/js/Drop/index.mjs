@@ -1,13 +1,16 @@
 function dropSetting (ctx, dialog, settingDomId, lang) {
-  const settingStorage = ctx.characterStorage.getItem(`x-${settingDomId}`)
+  const settingStorage = ctx.accountStorage.getItem(`x-${settingDomId}`)
+  console.log(settingStorage);
+  console.log(`x-${settingDomId}`);
   let checkObj = {
     gp: true,
     qty: true,
     lock: true,
+    sortBtn: true,
     inSidebar: false
   }
   if (!settingStorage) {
-    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
   } else {
     checkObj = settingStorage
   }
@@ -36,6 +39,12 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
             <label class="custom-control-label" for="x-drop-lock">${lang.setting.lock}</label>
           </div>
         </div>
+        <div class="col">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="x-drop-sort-btn" ${checkObj && checkObj.sortBtn ? 'checked' : ''}>
+            <label class="custom-control-label" for="x-drop-sort-btn">${lang.setting.sortBtn}</label>
+          </div>
+        </div>
       </div>
       <h4 class="mb-2" style="min-width: 40vw;">${lang.setting.Btn}</h4>
       <div class="row row-deck">
@@ -51,22 +60,34 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
   $(`#${settingDomId}`).append(div)
   $("#x-drop-gp").on("change", function () {
     checkObj.gp = this.checked
-    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
     window.settingStorage = checkObj
   });
   $("#x-drop-qty").on("change", function () {
     checkObj.qty = this.checked
-    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
     window.settingStorage = checkObj
   });
   $("#x-drop-lock").on("change", function () {
     checkObj.lock = this.checked
-    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
     window.settingStorage = checkObj
+  });
+  $("#x-drop-sort-btn").on("change", function () {
+    checkObj.sortBtn = this.checked
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
+    window.settingStorage = checkObj
+
+    // 动态显示隐藏归类按钮
+    if (this.checked) {
+      $('#x-auto-reset-bank-tab').show()
+    } else {
+      $('#x-auto-reset-bank-tab').hide()
+    }
   });
   $("#x-btn-in-sidebar").on("change", function () {
     checkObj.inSidebar = this.checked
-    ctx.characterStorage.setItem(`x-${settingDomId}`, checkObj)
+    ctx.accountStorage.setItem(`x-${settingDomId}`, checkObj)
     window.settingStorage = checkObj
   });
 }
@@ -193,9 +214,7 @@ function dropThievingHtml (ctx) {
     const settingStorage = window.settingStorage
     const sortedTable = npc.lootTable.sortedDropsArray;
     const { minGP, maxGP } = game.thieving.getNPCGPRange(npc);
-    let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT', 'GP_AMOUNT', {
-      gp: `${formatNumber(minGP)}-${formatNumber(maxGP)}`,
-    })}</small><br>`;
+    let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT_GP_AMOUNT', { gp: `${formatNumber(minGP)}-${formatNumber(maxGP)}`, })}</small><br>`;
     html += `${getLangString('THIEVING_POSSIBLE_COMMON')}<br><small>`;
     if (sortedTable.length) {
       html += `${getLangString('THIEVING_MOST_TO_LEAST_COMMON')}<br>`;
@@ -258,24 +277,17 @@ function dropThievingHtml (ctx) {
 
 // pet
 function dropPetHtml (ctx) {
-  ctx.patch(CombatAreaMenu, "createName").replace(function (o, areaData) {
-    let name = o(areaData);
+  ctx.patch(CombatAreaMenuElement, "setArea").replace(function (o, areaData) {
+    o(areaData)
     if (areaData.pet) {
       const pet = areaData.pet.pet
-      const requirements = createElement('div', {
-        classList: ['font-size-sm']
-      });
-      requirements.innerHTML = `
-        <small id="x-manger-${pet.id}">
-          ${getLangString('PAGE_NAME_CompletionLog_SUBCATEGORY_4')}：
-          <img class="skill-icon-xs mr-1 ml-2" src="${pet.media}">
-          (${(100 / areaData.pet.weight).toFixed(2)}%)
-        </small>
-      `
-      name.appendChild(requirements)
+      this.areaName.innerHTML = `${this.areaName.innerHTML}
+      <small id="x-manger-${pet.id}">
+        <img class="skill-icon-xs mr-1 ml-2" src="${pet.media}">
+        (${(100 / areaData.pet.weight).toFixed(2)}%)
+      </small>`
     }
-    return name;
-  });
+  })
 
   ctx.patch(PetManager, "unlockPet").replace(function (o, pet) {
     const petDiv = document.getElementById(`x-manger-${pet.id}`)
