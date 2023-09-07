@@ -1,7 +1,5 @@
 function dropSetting (ctx, dialog, settingDomId, lang) {
   const settingStorage = ctx.accountStorage.getItem(`x-${settingDomId}`)
-  console.log(settingStorage);
-  console.log(`x-${settingDomId}`);
   let checkObj = {
     gp: true,
     qty: true,
