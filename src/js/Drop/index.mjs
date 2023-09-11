@@ -93,6 +93,7 @@ function dropSetting (ctx, dialog, settingDomId, lang) {
 function drop (ctx) {
   dropMonsterHtml(ctx)
   dropThievingHtml(ctx)
+  dropArchaeologyHtml(ctx)
   window.viewItemContents = viewItemContents
 }
 
@@ -180,6 +181,32 @@ function viewItemContents (item) {
     imageHeight: 64,
     imageAlt: item.name,
   });
+}
+
+// archaeology
+function dropArchaeologyHtml (ctx) {
+  ctx.patch(ArtefactDropList, 'getItemDrop').replace(function (o, item, quantity, weight) {
+    const settingStorage = window.settingStorage
+    let html = o(item, quantity, weight)
+    const { digSite, size } = game.archaeology.getArtefactTypeAndLocation(item)
+    const totalWeight = digSite.artefacts[size].totalWeight
+
+    const found = game.stats.itemFindCount(item);
+
+    html += ` (${(100 * weight / totalWeight).toFixed(2)}%)`
+
+    if (settingStorage.gp) {
+      html += `
+            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+          `
+    }
+    if (settingStorage.qty && found) {
+      html += `
+            <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+          `
+    }
+    return html
+  })
 }
 
 // thieving
