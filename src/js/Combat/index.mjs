@@ -128,10 +128,22 @@ export default function XCombat (props) {
       }
     },
     renderTask (monster, tier, killsLeft) {
-      if (game.combat.slayerTask.monster.name !== this.checkItem.name) {
+      if (game.combat.slayerTask && game.combat.slayerTask.monster) {
+        if (game.combat.slayerTask.monster.name !== this.checkItem.name) {
+          game.combat.slayerTask.monster = monster;
+          game.combat.slayerTask.tier = tier;
+          game.combat.slayerTask.killsLeft = killsLeft;
+          game.combat.slayerTask.renderTask();
+        }
+      } else {
+        // 没有任务时，直接赋值
+        game.combat.slayerTask.clickNewTask()
+        game.combat.slayerTask.selectTask(tier, true, true, true)
+        combatMenus.slayerTask.closeTaskSelection()
         game.combat.slayerTask.monster = monster;
         game.combat.slayerTask.tier = tier;
         game.combat.slayerTask.killsLeft = killsLeft;
+        combatMenus.slayerTask.setTaskMonster(monster, killsLeft, tier)
         game.combat.slayerTask.renderTask();
       }
     },

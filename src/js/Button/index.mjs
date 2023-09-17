@@ -60,21 +60,27 @@ export function xAutoLootButton (ctx, lang) {
   });
 
   ctx.patch(CombatManager, 'onEnemyDeath').after(() => {
-    if ($('#x-auto-loot').length !== 0) {
-      const autoLootAll = $('#x-auto-loot')[0].checked;
-      if (autoLootAll) {
-        const drops = game.combat.loot.drops;
-        const count = drops.length;
-        if(count > 0) {
-            for(let i = count - 1; i >= 0; i--) {
-                const drop = drops[i];
-                if (game.bank.addItem(drop.item, drop.quantity, false, true)) {
-                    game.stats.Combat.add(CombatStats.ItemsLooted, drop.quantity);
-                    drops.splice(i, 1);
-                    game.combat.loot.renderRequired = true;
-                }
-            }
-        }
+    const isCheck = ctx.characterStorage.getItem('x-auto-loot');
+    if (isCheck) {
+      const drops = game.combat.loot.drops;
+      const count = drops.length;
+      if(count > 0) {
+          for(let i = count - 1; i >= 0; i--) {
+              const drop = drops[i];
+              if (game.bank.addItem(drop.item, drop.quantity, false, true)) {
+                  game.stats.Combat.add(CombatStats.ItemsLooted, drop.quantity);
+                  drops.splice(i, 1);
+                  game.combat.loot.renderRequired = true;
+              }
+          }
+      }
+      const lostCount = game.combat.loot.lostLoot.size
+      if (lostCount > 0) {
+        const lostLoot = game.combat.loot.lostLoot
+        lostLoot.forEach((v,i)=>{
+          game.bank.addItem(i, v, false, true)
+        })
+        lostLoot.clear()
       }
     }
   });
@@ -152,9 +158,14 @@ export function xAutoFarmingButton (ctx, lang) {
 
 
 
-// 装备类[6]，使用类[7]，食物类[8]，材料类[9]，合成类[10]，杂物类[11]
+// 药水[4]，垃圾[5]，装备类[6]，使用类[7]，食物类[8]，材料类[9]，合成类[10]，杂物类[11]
 function fliterItem () {
   return {
+    // 药水[4]
+    potionArr: {
+      tabId: 4,
+      value: ['PotionItem']
+    },
     // 装备，武器 [6]
     equipArr: {
       tabId: 6,
@@ -165,10 +176,10 @@ function fliterItem () {
       tabId: 7,
       value: ['BoneItem', 'TokenItem', 'OpenableItem']
     },
-    // 药水，食物 [8]
+    // 食物 [8]
     etaArr: {
       tabId: 8,
-      value: ['PotionItem', 'FoodItem']
+      value: ['FoodItem']
     },
     // 肥料 [9]
     materialArr: {
@@ -191,6 +202,10 @@ function fliterItem () {
 // 装备类[6]，使用类[7]，食物类[8]，材料类[9]，合成类[10]，杂物类[11]
 function fliterItemType () {
   return {
+    junkArr: {
+      tabId: 5,
+      value: ['Artefact', 'Junk']
+    },
     equipArr: {
       tabId: 6,
       value: ['Amulet']
@@ -205,7 +220,7 @@ function fliterItemType () {
     },
     materialArr: {
       tabId: 9,
-      value: ['Logs', 'Bar', 'Crafting Material', 'Dragonhide', 'Cooked Fish', 'Essence', 'Gem', 'General', 'Herb', 'Ingredient', 'Ore', 'Rune', 'Seeds', 'Superior Gem', 'Urn', 'Leather']
+      value: ['Logs', 'Bar', 'Crafting Material', 'Dragonhide', 'Cooked Fish', 'Essence', 'Gem', 'General', 'Herb', 'Ingredient', 'Ore', 'Rune', 'Seeds', 'Superior Gem', 'Urn', 'Leather', 'Crafting', 'Crystal']
     },
     synthesisArr: {
       tabId: 10,
@@ -214,6 +229,24 @@ function fliterItemType () {
     otherArr: {
       tabId: 11,
       value: ['Christmas', 'Christmas 2021', 'Easter', 'Fish', 'Junk', 'Lemon', 'Lime', 'Miscellaneous', 'Resource', 'TODO', 'Secret']
+    }
+  }
+}
+
+// 武器分类 近战[1]，远程[2]，魔法[3]
+function fliterCombatItemType () {
+  return {
+    combatArr: {
+      tabId: 1,
+      value: ['Weapon', 'Armour', 'Trimmed Armour', 'Shield', '2H']
+    },
+    rangedArr: {
+      tabId: 2,
+      value: ['Ranged Weapon', 'Ammo', 'Ranged Armour', 'Arrows', 'Bolts']
+    },
+    magicArr: {
+      tabId: 3,
+      value: ['Magic Staff', 'Magic Armour', 'Magic Wand', 'Magic Book', 'Magic']
     }
   }
 }
@@ -248,7 +281,7 @@ export function xAutoResetBankTab (ctx, lang) {
     }
 
     // init to tab 0
-    for (let i = 1; i < game.bank.maxTabs; i++) {
+    for (let i = 1; i < game.bank.tabCount; i++) {
       game.bank.itemSelectionMode = 1
       game.bank.itemsByTab[i].forEach(x => {
         game.bank.toggleItemSelected(x)
@@ -259,6 +292,7 @@ export function xAutoResetBankTab (ctx, lang) {
 
     const constructorItem = Object.values(fliterItem())
     const itemType = Object.values(fliterItemType())
+    const combatType = Object.values(fliterCombatItemType())
 
     constructorItem.forEach(val => {
       if (val.value.length > 0) {
@@ -268,6 +302,11 @@ export function xAutoResetBankTab (ctx, lang) {
     itemType.forEach(val => {
       if (val.value.length > 0) {
         mapBankItems(val.value, 'type', val.tabId, 0)
+      }
+    })
+    combatType.forEach(val => {
+      if (val.value.length > 0) {
+        mapBankItems(val.value, 'type', val.tabId, 6)
       }
     })
     game.bank.sortButtonOnClick()
