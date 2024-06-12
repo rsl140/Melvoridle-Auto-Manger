@@ -211,7 +211,7 @@ function dropArchaeologyHtml (ctx) {
 
 // thieving
 function dropThievingHtml (ctx) {
-  ctx.patch(ThievingMenu, 'formatSpecialDrop').replace(function (o, item, qty) {
+  ctx.patch(Thieving, 'formatSpecialDrop').replace(function (o, item, qty) {
     const settingStorage = window.settingStorage
     let html = o(item, qty)
     const found = game.stats.itemFindCount(item);
@@ -235,69 +235,69 @@ function dropThievingHtml (ctx) {
     }
     return html
   })
-  ctx.patch(ThievingMenu, 'showNPCDrops').replace(function (o, npc, area) {
-    const settingStorage = window.settingStorage
-    const sortedTable = npc.lootTable.sortedDropsArray;
-    const { minGP, maxGP } = game.thieving.getNPCGPRange(npc);
-    let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT_GP_AMOUNT', { gp: `${formatNumber(minGP)}-${formatNumber(maxGP)}`, })}</small><br>`;
-    html += `${getLangString('THIEVING_POSSIBLE_COMMON')}<br><small>`;
-    if (sortedTable.length) {
-      html += `${getLangString('THIEVING_MOST_TO_LEAST_COMMON')}<br>`;
-      const totalWeight = npc.lootTable.weight;
-      html += sortedTable.map(({ item, weight, minQuantity, maxQuantity }) => {
-        let text = `${maxQuantity > minQuantity ? `${minQuantity}-` : ''}${maxQuantity} x <img class="skill-icon-xs mr-2" src="${item.media}">${item.name}`;
-        text += ` (${((100 * weight) / totalWeight).toFixed(2)}%)`
-        if (settingStorage.lock) {
-          text += `
-            ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
-          `
-        }
-        if (settingStorage.gp) {
-          text += `
-            <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
-          `
-        }
-        if (settingStorage.qty) {
-          text += `
-            <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
-          `
-        }
-        return text;
-      }
-      ).join('<br>');
-      if (DEBUGENABLED)
-        html += `<br>Average Value: ${npc.lootTable.averageDropValue.toFixed(2)} GP`;
-    } else {
-      html += getLangString('THIEVING_NO_COMMON_DROPS');
-    }
-    html += `</small><br>`;
-    html += `${getLangString('THIEVING_POSSIBLE_RARE')}<br><small>`;
-    const generalRareHTML = [];
-    game.thieving.generalRareItems.forEach(({ item, npcs }) => {
-      if (npcs === undefined || npcs.has(npc))
-        generalRareHTML.push(this.formatSpecialDrop(item));
-    }
-    );
-    html += generalRareHTML.join('<br>');
-    html += `</small><br>`;
-    if (area.uniqueDrops.length) {
-      html += `${getLangString('THIEVING_POSSIBLE_AREA_UNIQUE')}<br><small>`;
-      html += area.uniqueDrops.map((drop) => this.formatSpecialDrop(drop.item, drop.quantity)).join('<br>');
-      html += '</small><br>';
-    }
-    if (npc.uniqueDrop !== undefined) {
-      html += `${getLangString('THIEVING_POSSIBLE_NPC_UNIQUE')}<br><small>${this.formatSpecialDrop(npc.uniqueDrop.item, npc.uniqueDrop.quantity)}</small>`;
-    }
-    html += '</span>';
-    SwalLocale.fire({
-      title: npc.name,
-      html,
-      imageUrl: npc.media,
-      imageWidth: 64,
-      imageHeight: 64,
-      imageAlt: npc.name,
-    });
-  });
+  // ctx.patch(ThievingMenu, 'showNPCDrops').replace(function (o, npc, area) {
+  //   const settingStorage = window.settingStorage
+  //   const sortedTable = npc.lootTable.sortedDropsArray;
+  //   const { minGP, maxGP } = game.thieving.getNPCGPRange(npc);
+  //   let html = `<span class="text-dark"><small><img class="skill-icon-xs mr-2" src="${cdnMedia('assets/media/main/coins.svg')}"> ${templateLangString('MENU_TEXT_GP_AMOUNT', { gp: `${formatNumber(minGP)}-${formatNumber(maxGP)}`, })}</small><br>`;
+  //   html += `${getLangString('THIEVING_POSSIBLE_COMMON')}<br><small>`;
+  //   if (sortedTable.length) {
+  //     html += `${getLangString('THIEVING_MOST_TO_LEAST_COMMON')}<br>`;
+  //     const totalWeight = npc.lootTable.weight;
+  //     html += sortedTable.map(({ item, weight, minQuantity, maxQuantity }) => {
+  //       let text = `${maxQuantity > minQuantity ? `${minQuantity}-` : ''}${maxQuantity} x <img class="skill-icon-xs mr-2" src="${item.media}">${item.name}`;
+  //       text += ` (${((100 * weight) / totalWeight).toFixed(2)}%)`
+  //       if (settingStorage.lock) {
+  //         text += `
+  //           ${game.stats.Items.get(item, ItemStats.TimesFound) > 0 ? '<i class="text-success fa fa-check-circle mr-1"></i>' : '<i style="color: #e56767;" class="fa fa-fw fa-times mr-1"></i>'}
+  //         `
+  //       }
+  //       if (settingStorage.gp) {
+  //         text += `
+  //           <img class="skill-icon-xxs mr-1" src="${cdnMedia('assets/media/main/coins.svg')}">${item.sellsFor}
+  //         `
+  //       }
+  //       if (settingStorage.qty) {
+  //         text += `
+  //           <img class="mr-1" width="10" src="${cdnMedia('assets/media/main/bank_header.svg')}">${game.bank.getQty(item)}
+  //         `
+  //       }
+  //       return text;
+  //     }
+  //     ).join('<br>');
+  //     if (DEBUGENABLED)
+  //       html += `<br>Average Value: ${npc.lootTable.averageDropValue.toFixed(2)} GP`;
+  //   } else {
+  //     html += getLangString('THIEVING_NO_COMMON_DROPS');
+  //   }
+  //   html += `</small><br>`;
+  //   html += `${getLangString('THIEVING_POSSIBLE_RARE')}<br><small>`;
+  //   const generalRareHTML = [];
+  //   game.thieving.generalRareItems.forEach(({ item, npcs }) => {
+  //     if (npcs === undefined || npcs.has(npc))
+  //       generalRareHTML.push(this.formatSpecialDrop(item));
+  //   }
+  //   );
+  //   html += generalRareHTML.join('<br>');
+  //   html += `</small><br>`;
+  //   if (area.uniqueDrops.length) {
+  //     html += `${getLangString('THIEVING_POSSIBLE_AREA_UNIQUE')}<br><small>`;
+  //     html += area.uniqueDrops.map((drop) => this.formatSpecialDrop(drop.item, drop.quantity)).join('<br>');
+  //     html += '</small><br>';
+  //   }
+  //   if (npc.uniqueDrop !== undefined) {
+  //     html += `${getLangString('THIEVING_POSSIBLE_NPC_UNIQUE')}<br><small>${this.formatSpecialDrop(npc.uniqueDrop.item, npc.uniqueDrop.quantity)}</small>`;
+  //   }
+  //   html += '</span>';
+  //   SwalLocale.fire({
+  //     title: npc.name,
+  //     html,
+  //     imageUrl: npc.media,
+  //     imageWidth: 64,
+  //     imageHeight: 64,
+  //     imageAlt: npc.name,
+  //   });
+  // });
 }
 
 // pet

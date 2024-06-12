@@ -1,5 +1,5 @@
-const { arr: combatAreaArr, obj: combatAreaObj } = getMonsters(game.combatAreaDisplayOrder);
-const { arr: slayerAreaArr, obj: slayerAreaObj } = getMonsters(game.slayerAreaDisplayOrder);
+const { arr: combatAreaArr, obj: combatAreaObj } = getMonsters(game.combatAreas);
+const { arr: slayerAreaArr, obj: slayerAreaObj } = getMonsters(game.slayerAreas);
 // const dungeonAreaArr = getMonsters(game.dungeonDisplayOrder);
 
 function getMonsters (list) {

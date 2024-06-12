@@ -145,6 +145,7 @@ export function xAutoFarmingButton (ctx, lang) {
   btn.addEventListener("click", () => {
     game.farming.categories.allObjects.map(val => {
       game.farming.harvestAllOnClick(val)
+      game.farming.compostAllOnClick(val, game.items.composts.allObjects[0])
       game.farming.plantAllSelectedOnClick(val)
     })
   })
