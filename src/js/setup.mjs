@@ -31,7 +31,7 @@ export async function setup (ctx) {
   // await ctx.gameData.addPackage(ModData)
 
   ctx.onModsLoaded(async (ctx) => {
-    // Drop.dropPetHtml(ctx);
+    Drop.dropPetHtml(ctx);
     // Drop.dropFishSellforHtml(ctx);
   });
 
@@ -135,9 +135,9 @@ export async function setup (ctx) {
 
 
     // MonsterDrop
-    // Drop.drop(ctx)
+    Drop.drop(ctx)
     // Pet
-    // Drop.dropPetInterfaceHtml()
+    Drop.dropPetInterfaceHtml()
 
     // Auto Buttons
     XButtons.xAutoLootButton(ctx, currentLang)
